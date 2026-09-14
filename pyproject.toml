@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mslm-framework"
+version = "0.2.0"
+description = "Reproducible research implementation of the Mini-App Security Layer Model"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "MSLM Research Project"}]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "coverage>=7.3", "ruff>=0.4", "mypy>=1.8"]
+
+[project.scripts]
+mslm-experiment = "mslm.experiments:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.coverage.run]
+branch = true
+source = ["mslm"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 85
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+

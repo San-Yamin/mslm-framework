@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this research artifact, please cite the accompanying paper."
+title: "MSLM Framework"
+type: software
+authors:
+  - family-names: "Yamin"
+    given-names: "San"
+version: 0.2.0
+date-released: 2026-09-14
+license: MIT
+repository-code: "https://github.com/San-Yamin/mslm-framework"
+abstract: >-
+  Reproducible research implementation of the Mini-App Security Layer Model
+  and Cumulative Chained Risk Score for controlled FinTech mini-app security
+  experiments.
