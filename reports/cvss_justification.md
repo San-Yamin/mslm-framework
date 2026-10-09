@@ -41,6 +41,13 @@ vectors. V5 = 6.2 cannot be justified without an idiosyncratic vector and should
 be corrected or explicitly documented.** No inputs were manipulated to match the
 paper.
 
+**Resolution adopted:** V5 was changed from 6.2 to **6.5** using the clean vector
+`AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N`. The code (`risk.py:PAPER_CHAINS["C2"]`,
+`l1.py:CVSS_BY_VULNERABILITY`, `scenarios.py`) and all downstream values were
+updated: C2 CCRS 8.67 → **8.775**, C2 amplification → **+35.0%**, Table VI overall
+CCRS avg → **9.312363**, avg amplification → **23.93%**. Verify with the official
+FIRST.org calculator before submission.
+
 ## 4. Required actions for the manuscript
 
 1. Add a column or appendix that lists, for each V1–V6, the full CVSS v3.1

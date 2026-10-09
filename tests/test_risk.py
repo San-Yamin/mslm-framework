@@ -9,7 +9,7 @@ class RiskTests(unittest.TestCase):
         self.assertAlmostEqual(calculate_ccrs(PAPER_CHAINS["C1"]).raw_score, 9.3)
 
     def test_paper_chain_c2(self):
-        self.assertAlmostEqual(calculate_ccrs(PAPER_CHAINS["C2"]).raw_score, 8.67)
+        self.assertAlmostEqual(calculate_ccrs(PAPER_CHAINS["C2"]).raw_score, 8.775)
 
     def test_paper_chain_c3(self):
         self.assertAlmostEqual(calculate_ccrs(PAPER_CHAINS["C3"]).raw_score, 9.221)

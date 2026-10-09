@@ -8,6 +8,8 @@ experiment. It should be used to complete Sections VII-C and VII-D after executi
 > See `reports/experiment_methodology.md`, `reports/cvss_justification.md`,
 > `reports/manuscript_revision_notes.md`, and `reports/reviewer_evidence_matrix.md`.
 > The Juice Shop section below remains authoritative: those artifacts do not exist.
+> **V5 was re-derived from 6.2 to 6.5** (`AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N`);
+> C2 CCRS is now 8.775 and Table VI overall CCRS avg is 9.312363.
 
 ## Section VII-C — MSLM defense effectiveness
 

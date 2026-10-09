@@ -59,8 +59,9 @@ vectors, screenshots, or test evidence.
 
 ### A5. CVSS vectors — Table I / §III-C (Reviewer I.5)
 - Add the full CVSS v3.1 vectors and assumptions (`reports/cvss_justification.md`).
-- **V5 = 6.2 cannot be justified by a clean `S:U, AV:N` vector; re-derive or
-  document the exact vector.** Recompute all downstream values if changed.
+- **RESOLVED: V5 re-derived 6.2 → 6.5** with vector
+  `AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N`. Downstream values updated in code and in
+  Table VI (C2 CCRS 8.775; overall avg 9.312363). See paste-ready A5/A4b.
 
 ### A6. L1 scope — §VI-B / §VII-B (Reviewer III.2)
 - **Current:** L1 framed as merchant onboarding analysis for a mini-app ecosystem.
@@ -88,9 +89,12 @@ vectors, screenshots, or test evidence.
 ## B. Numbers verified as already consistent (no change needed)
 
 - Test-count breakdown vs Table V (10/11/10/11/8/4 = 54) is accurate.
-- CCRS values (C1 9.30, C2 8.67, C3 9.221, C4 9.95345) and amplifications
-  (24.0/33.38/13.84/22.88%, mean 23.53%) are accurate.
-- Table VI means (max 7.55, avg 7.006, CCRS 9.286) are internally consistent.
+- Original CCRS values (C1 9.30, C2 8.67, C3 9.221, C4 9.95345) and
+  amplifications (24.0/33.38/13.84/22.88%, mean 23.53%) were internally consistent.
+  **After the V5 revision** they become C2 **8.775** (+35.0%) and mean
+  amplification **23.93%**.
+- Original Table VI means (max 7.55, avg 7.006, CCRS 9.286) are internally
+  consistent. **After the V5 revision**: avg **7.0438**, CCRS **9.312363**.
 - Environment (Python 3.9.6, macOS 15.6 arm64) matches.
 - Note: `docs/PAPER_EVIDENCE.md`'s remark that "average CCRS is not 9.91" is
   stale — the current manuscript already reports 9.286.

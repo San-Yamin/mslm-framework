@@ -47,10 +47,11 @@ Location: `src/mslm/scenarios.py`, `results/revised/trials.csv`,
 
 **5. Provide CVSS vectors or derivation.**
 Action: Assessed each assigned score against valid CVSS v3.1 vectors. Five of six
-are justifiable with explicit scenario assumptions; **V5 = 6.2 is not justifiable
-by a clean vector and is flagged for re-derivation**. No vectors were fabricated.
-**[AUTHOR DECISION]** publish vectors and confirm/replace V5.
-Location: `reports/cvss_justification.md`.
+were already justifiable; **V5 was re-derived from 6.2 to 6.5** with the vector
+`AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N` (no clean vector yields 6.2 for sensitive
+data exposure). All downstream values (C2 CCRS 8.775, Table VI means) were
+recomputed. No vectors were fabricated.
+Location: `reports/cvss_justification.md`, `reports/manuscript_revisions_paste_ready.md` A5/A4b.
 
 **6. Clarify the relationship between Juice Shop and the Python prototype.**
 Action: Audited the artifact: no Juice Shop materials exist. The manuscript claim

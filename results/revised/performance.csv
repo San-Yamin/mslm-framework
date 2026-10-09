@@ -1,2 +1,2 @@
 operation,iterations,mean_us,median_us,p95_us,p99_us,min_us,max_us,control_mean_us,absolute_overhead_mean_us,overhead_percent_vs_control
-L2+L3 valid payment verification,10000,15.526,15.5,15.792,17.541,13.792,27.833,0.191,15.335,8028.556
+L2+L3 valid payment verification,10000,15.048,15.125,15.333,15.5,13.458,25.167,0.185,14.863,8025.75

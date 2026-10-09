@@ -182,3 +182,8 @@ set-severity aggregator with no chain-awareness — consistent with Reviewer I.1
 and III.1. CVSS vectors and Juice Shop artifacts are absent.
 
 No source/test changes made yet, per instruction to present findings first.
+
+> **Post-revision note:** the C2 line above (V5=6.2, CCRS 8.67) describes the
+> baseline. V5 was later re-derived to 6.5, so the revised C2 CCRS is **8.775**
+> and overall Table VI avg CCRS is **9.312363** (`results/revised/`). This audit
+> intentionally preserves the as-found baseline.

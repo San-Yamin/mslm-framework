@@ -17,19 +17,19 @@
       "severity": "critical"
     },
     {
-      "amplification_percent": 33.384615,
+      "amplification_percent": 35.0,
       "assumption": "independent cumulative-complement aggregation",
       "capped_sum": 10.0,
       "chain": "C2",
-      "deployment_score": 8.67,
+      "deployment_score": 8.775,
       "max_cvss": 6.5,
-      "mean_cvss": 6.35,
-      "raw_score": 8.67,
+      "mean_cvss": 6.5,
+      "raw_score": 8.775,
       "scores": [
         6.5,
-        6.2
+        6.5
       ],
-      "sequential_product": 4.03,
+      "sequential_product": 4.225,
       "severity": "high"
     },
     {
@@ -67,7 +67,7 @@
       "severity": "critical"
     }
   ],
-  "duration_seconds": 1.149068,
+  "duration_seconds": 1.131239,
   "effectiveness": [
     {
       "block_rate_ci95_high_percent": 100.0,
@@ -132,7 +132,7 @@
     "python": "3.9.6 (default, Apr 30 2025, 02:07:17) \n[Clang 17.0.0 (clang-1700.0.13.5)]"
   },
   "framework_version": "0.2.0",
-  "generated_at_unix": 1791530769.3996742,
+  "generated_at_unix": 1791533586.04616,
   "limitations": [
     "Synthetic controlled attacks exercising the encoded controls; not OWASP Juice Shop traffic",
     "C1/C4 are blocked by the L1 gate, so later layers are not reached in those trials",
@@ -147,17 +147,17 @@
   },
   "performance": [
     {
-      "absolute_overhead_mean_us": 15.335,
-      "control_mean_us": 0.191,
+      "absolute_overhead_mean_us": 14.863,
+      "control_mean_us": 0.185,
       "iterations": 10000,
-      "max_us": 27.833,
-      "mean_us": 15.526,
-      "median_us": 15.5,
-      "min_us": 13.792,
+      "max_us": 25.167,
+      "mean_us": 15.048,
+      "median_us": 15.125,
+      "min_us": 13.458,
       "operation": "L2+L3 valid payment verification",
-      "overhead_percent_vs_control": 8028.556,
-      "p95_us": 15.792,
-      "p99_us": 17.541
+      "overhead_percent_vs_control": 8025.75,
+      "p95_us": 15.333,
+      "p99_us": 15.5
     }
   ],
   "plausibility": [
@@ -173,7 +173,7 @@
       "trust_boundaries": "user -> merchant mini-app | merchant mini-app -> backend service"
     },
     {
-      "ccrs": 8.67,
+      "ccrs": 8.775,
       "chain": "C2",
       "evidence": "tests/test_l2.py::test_idor_denied; tests/test_pipeline.py::test_l2_blocks_idor | tests/test_l2.py::test_pan_masked_and_cvv_removed",
       "gaps": "",

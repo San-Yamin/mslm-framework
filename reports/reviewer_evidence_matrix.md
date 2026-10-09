@@ -101,7 +101,8 @@ Total: 54 → 80 tests, all passing (`results/revised/tests.log`).
 
 ## Remaining author actions (cannot be done from the artifact)
 
-1. Publish CVSS v3.1 vectors; re-derive V5 = 6.2.
+1. Publish CVSS v3.1 vectors. **V5 re-derived 6.2 → 6.5** (done in code + Table VI;
+   author should verify with the FIRST.org calculator).
 2. Correct or support the Juice Shop claim.
-3. Apply manuscript wording changes A2–A8.
-4. Confirm whether to commit/push the revision (not done).
+3. Apply manuscript wording changes A1–A10 (`reports/manuscript_revisions_paste_ready.md`).
+4. Commit/push the revision (done on branch `revision/icait-2026`).

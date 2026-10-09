@@ -185,7 +185,7 @@ CHAIN_STEPS: Mapping[str, Tuple[ChainStep, ...]] = {
             "tests/test_l2.py::test_idor_denied; tests/test_pipeline.py::test_l2_blocks_idor",
         ),
         ChainStep(
-            "V5", 6.2,
+            "V5", 6.5,
             "victim object is returned through a shared response path",
             "merchant API -> client",
             "tests/test_l2.py::test_pan_masked_and_cvv_removed",

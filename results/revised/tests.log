@@ -80,7 +80,7 @@ test_trials_are_deterministic_for_a_fixed_seed (test_scenarios.ScenarioTraceabil
 test_unknown_chain_rejected (test_scenarios.ScenarioTraceabilityTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 80 tests in 0.060s
+Ran 80 tests in 0.059s
 
 OK
 {
@@ -102,19 +102,19 @@ OK
       "severity": "critical"
     },
     {
-      "amplification_percent": 33.384615,
+      "amplification_percent": 35.0,
       "assumption": "independent cumulative-complement aggregation",
       "capped_sum": 10.0,
       "chain": "C2",
-      "deployment_score": 8.67,
+      "deployment_score": 8.775,
       "max_cvss": 6.5,
-      "mean_cvss": 6.35,
-      "raw_score": 8.67,
+      "mean_cvss": 6.5,
+      "raw_score": 8.775,
       "scores": [
         6.5,
-        6.2
+        6.5
       ],
-      "sequential_product": 4.03,
+      "sequential_product": 4.225,
       "severity": "high"
     },
     {
@@ -152,7 +152,7 @@ OK
       "severity": "critical"
     }
   ],
-  "duration_seconds": 0.002029,
+  "duration_seconds": 0.002182,
   "effectiveness": [
     {
       "block_rate_ci95_high_percent": 100.0,
@@ -217,7 +217,7 @@ OK
     "python": "3.9.6 (default, Apr 30 2025, 02:07:17) \n[Clang 17.0.0 (clang-1700.0.13.5)]"
   },
   "framework_version": "0.2.0",
-  "generated_at_unix": 1791530763.8801742,
+  "generated_at_unix": 1791533585.952207,
   "limitations": [
     "Synthetic controlled attacks exercising the encoded controls; not OWASP Juice Shop traffic",
     "C1/C4 are blocked by the L1 gate, so later layers are not reached in those trials",
@@ -232,17 +232,17 @@ OK
   },
   "performance": [
     {
-      "absolute_overhead_mean_us": 14.7,
-      "control_mean_us": 0.208,
+      "absolute_overhead_mean_us": 15.821,
+      "control_mean_us": 0.225,
       "iterations": 10,
-      "max_us": 16.125,
-      "mean_us": 14.908,
-      "median_us": 14.791,
-      "min_us": 14.417,
+      "max_us": 17.25,
+      "mean_us": 16.046,
+      "median_us": 15.834,
+      "min_us": 15.417,
       "operation": "L2+L3 valid payment verification",
-      "overhead_percent_vs_control": 7060.519,
-      "p95_us": 16.125,
-      "p99_us": 16.125
+      "overhead_percent_vs_control": 7025.222,
+      "p95_us": 17.25,
+      "p99_us": 17.25
     }
   ],
   "plausibility": [
@@ -258,7 +258,7 @@ OK
       "trust_boundaries": "user -> merchant mini-app | merchant mini-app -> backend service"
     },
     {
-      "ccrs": 8.67,
+      "ccrs": 8.775,
       "chain": "C2",
       "evidence": "tests/test_l2.py::test_idor_denied; tests/test_pipeline.py::test_l2_blocks_idor | tests/test_l2.py::test_pan_masked_and_cvv_removed",
       "gaps": "",
