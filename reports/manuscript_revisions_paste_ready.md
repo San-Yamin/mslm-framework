@@ -18,6 +18,13 @@ proposals to be verified against the official FIRST.org calculator.
 > chain, and **no** MSLM control. The replacements below are now evidence-limited
 > rather than claims of successful reproduction. A human should visually confirm
 > the OCR-derived readings before submission.
+>
+> **Author confirmations (2026-10-09):** both `sanyamin2005@gmail.com` and
+> `demo@gmail.com` are author-created test accounts. The `ADMIN_TOKEN` local
+> storage entry is **author-reported** as automatically generated; an independent
+> check of the available Juice Shop v20.0.0 source and built frontend found **no**
+> `ADMIN_TOKEN` key, so it must **not** be described as a confirmed default
+> credential. No passwords or token values are reproduced in these reports.
 
 ### A1a. Abstract — FIND
 > Selected vulnerability patterns were reproduced in a controlled OWASP Juice Shop
