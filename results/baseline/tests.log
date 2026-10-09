@@ -1,0 +1,197 @@
+test_all_encoded_attacks_blocked_at_expected_layer (test_experiments.ExperimentTests) ... ok
+test_benchmark_returns_distribution (test_experiments.ExperimentTests) ... ok
+test_cli_writes_machine_readable_evidence (test_experiments.ExperimentTests) ... ok
+test_effectiveness_is_deterministic (test_experiments.ExperimentTests) ... ok
+test_authorization_call_suppresses_missing_authz_rule (test_l1.L1Tests) ... ok
+test_client_price_detected (test_l1.L1Tests) ... ok
+test_custom_auth_detected (test_l1.L1Tests) ... ok
+test_direct_reference_detected (test_l1.L1Tests) ... ok
+test_finding_ids_are_stable (test_l1.L1Tests) ... ok
+test_hardcoded_auth_secret_detected (test_l1.L1Tests) ... ok
+test_high_risk_is_rejected (test_l1.L1Tests) ... ok
+test_secure_code_approved (test_l1.L1Tests) ... ok
+test_sensitive_admin_without_authorization_detected (test_l1.L1Tests) ... ok
+test_syntax_error_is_fail_closed (test_l1.L1Tests) ... ok
+test_weak_crypto_calls_detected (test_l1.L1Tests) ... ok
+test_cross_merchant_access_denied (test_l2.L2Tests) ... ok
+test_idor_denied (test_l2.L2Tests) ... ok
+test_lists_are_recursively_minimized (test_l2.L2Tests) ... ok
+test_matching_merchant_accepted (test_l2.L2Tests) ... ok
+test_nested_secrets_removed (test_l2.L2Tests) ... ok
+test_owner_accepted (test_l2.L2Tests) ... ok
+test_pan_masked_and_cvv_removed (test_l2.L2Tests) ... ok
+test_unauthenticated_principal_denied (test_l2.L2Tests) ... ok
+test_user_can_read_own_transaction (test_l2.L2Tests) ... ok
+test_user_cannot_grant_permission (test_l2.L2Tests) ... ok
+test_amount_conversion (test_l3.L3Tests) ... ok
+test_each_bound_claim_is_enforced (test_l3.L3Tests) ... ok
+test_expired_token_rejected (test_l3.L3Tests) ... ok
+test_future_token_rejected (test_l3.L3Tests) ... ok
+test_invalid_amounts_rejected (test_l3.L3Tests) ... ok
+test_invalid_currency_rejected (test_l3.L3Tests) ... ok
+test_key_rotation_preserves_old_verification (test_l3.L3Tests) ... ok
+test_replay_is_rejected (test_l3.L3Tests) ... ok
+test_short_key_rejected (test_l3.L3Tests) ... ok
+test_signature_mutation_rejected (test_l3.L3Tests) ... ok
+test_valid_token (test_l3.L3Tests) ... ok
+test_cross_merchant_operator_cannot_issue_token (test_pipeline.PipelineTests) ... ok
+test_decisions_are_audited (test_pipeline.PipelineTests) ... ok
+test_l1_blocks_unapproved_merchant (test_pipeline.PipelineTests) ... ok
+test_l2_blocks_idor (test_pipeline.PipelineTests) ... ok
+test_l3_blocks_price_tampering (test_pipeline.PipelineTests) ... ok
+test_legitimate_payment_approved (test_pipeline.PipelineTests) ... ok
+test_second_payment_is_replay (test_pipeline.PipelineTests) ... ok
+test_user_cannot_issue_merchant_token (test_pipeline.PipelineTests) ... ok
+test_classification_boundaries (test_risk.RiskTests) ... ok
+test_empty_rejected (test_risk.RiskTests) ... ok
+test_invalid_cap_rejected (test_risk.RiskTests) ... ok
+test_out_of_range_rejected (test_risk.RiskTests) ... ok
+test_paper_chain_c1 (test_risk.RiskTests) ... ok
+test_paper_chain_c2 (test_risk.RiskTests) ... ok
+test_paper_chain_c3 (test_risk.RiskTests) ... ok
+test_paper_chain_c4_is_capped_for_deployment (test_risk.RiskTests) ... ok
+test_single_score_is_unchanged (test_risk.RiskTests) ... ok
+test_zero_scores (test_risk.RiskTests) ... ok
+
+----------------------------------------------------------------------
+Ran 54 tests in 0.022s
+
+OK
+{
+  "ccrs": [
+    {
+      "amplification_percent": 24.0,
+      "assumption": "independent cumulative-complement aggregation",
+      "chain": "C1",
+      "deployment_score": 9.3,
+      "max_cvss": 7.5,
+      "raw_score": 9.3,
+      "scores": [
+        7.5,
+        7.2
+      ],
+      "severity": "critical"
+    },
+    {
+      "amplification_percent": 33.384615,
+      "assumption": "independent cumulative-complement aggregation",
+      "chain": "C2",
+      "deployment_score": 8.67,
+      "max_cvss": 6.5,
+      "raw_score": 8.67,
+      "scores": [
+        6.5,
+        6.2
+      ],
+      "severity": "high"
+    },
+    {
+      "amplification_percent": 13.839506,
+      "assumption": "independent cumulative-complement aggregation",
+      "chain": "C3",
+      "deployment_score": 9.221,
+      "max_cvss": 8.1,
+      "raw_score": 9.221,
+      "scores": [
+        8.1,
+        5.9
+      ],
+      "severity": "critical"
+    },
+    {
+      "amplification_percent": 22.882099,
+      "assumption": "independent cumulative-complement aggregation",
+      "chain": "C4",
+      "deployment_score": 9.8,
+      "max_cvss": 8.1,
+      "raw_score": 9.95345,
+      "scores": [
+        7.5,
+        7.2,
+        6.5,
+        8.1
+      ],
+      "severity": "critical"
+    }
+  ],
+  "duration_seconds": 0.00141,
+  "effectiveness": [
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 34.238,
+      "block_rate_percent": 100.0,
+      "blocked": 2,
+      "chain": "C1",
+      "expected_first_layer": "L1",
+      "iterations": 2,
+      "legitimate_controls_accepted": 2,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 34.238,
+      "block_rate_percent": 100.0,
+      "blocked": 2,
+      "chain": "C2",
+      "expected_first_layer": "L2",
+      "iterations": 2,
+      "legitimate_controls_accepted": 2,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 34.238,
+      "block_rate_percent": 100.0,
+      "blocked": 2,
+      "chain": "C3",
+      "expected_first_layer": "L3",
+      "iterations": 2,
+      "legitimate_controls_accepted": 2,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 34.238,
+      "block_rate_percent": 100.0,
+      "blocked": 2,
+      "chain": "C4",
+      "expected_first_layer": "L1",
+      "iterations": 2,
+      "legitimate_controls_accepted": 2,
+      "unexpected_approvals": 0
+    }
+  ],
+  "environment": {
+    "platform": "macOS-15.6-arm64-arm-64bit",
+    "processor": "arm",
+    "python": "3.9.6 (default, Apr 30 2025, 02:07:17) \n[Clang 17.0.0 (clang-1700.0.13.5)]"
+  },
+  "framework_version": "0.2.0",
+  "generated_at_unix": 1791527181.864214,
+  "limitations": [
+    "Synthetic controlled attacks; not OWASP Juice Shop traffic",
+    "In-memory replay store; no distributed storage latency",
+    "Microbenchmark excludes network, database and TLS overhead"
+  ],
+  "parameters": {
+    "benchmark_iterations": 10,
+    "iterations_per_chain": 2,
+    "seed": 2026
+  },
+  "performance": [
+    {
+      "absolute_overhead_mean_us": 15.667,
+      "control_mean_us": 0.25,
+      "iterations": 10,
+      "max_us": 17.375,
+      "mean_us": 15.917,
+      "median_us": 16.334,
+      "min_us": 14.584,
+      "operation": "L2+L3 valid payment verification",
+      "overhead_percent_vs_control": 6269.308,
+      "p95_us": 17.375,
+      "p99_us": 17.375
+    }
+  ],
+  "schema_version": "1.0"
+}

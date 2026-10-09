@@ -17,6 +17,15 @@ class ExperimentTests(unittest.TestCase):
         self.assertEqual({row["legitimate_controls_accepted"] for row in rows}, {10})
         self.assertTrue(all(row["block_rate_ci95_low_percent"] < 100 for row in rows))
 
+    def test_effectiveness_reports_real_variation_and_layer(self):
+        rows = run_effectiveness(25, 2026)
+        for row in rows:
+            with self.subTest(chain=row["chain"]):
+                self.assertGreater(row["distinct_attack_inputs"], 1)
+                self.assertTrue(row["first_layer_matches_all"])
+                self.assertEqual(row["blocked"], 25)
+                self.assertEqual(row["legitimate_controls_accepted"], 25)
+
     def test_benchmark_returns_distribution(self):
         row = run_benchmark(10)[0]
         self.assertGreaterEqual(row["p99_us"], row["median_us"])
@@ -36,5 +45,12 @@ class ExperimentTests(unittest.TestCase):
                 ]
             )
             self.assertEqual(result, 0)
-            for name in ("experiment.json", "effectiveness.csv", "performance.csv", "ccrs.csv"):
+            for name in (
+                "experiment.json",
+                "effectiveness.csv",
+                "performance.csv",
+                "ccrs.csv",
+                "plausibility.csv",
+                "trials.csv",
+            ):
                 self.assertTrue((Path(directory) / name).exists())

@@ -1,0 +1,47 @@
+MSLM baseline environment and provenance
+========================================
+Captured by:   opencode audit (Phase 1)
+Date (local):  2026-10-09
+Repo:          /Users/sanyamin/Documents/My Paper Journey/mslm_framework
+Remote:        https://github.com/San-Yamin/mslm-framework.git
+Branch:        revision/icait-2026 (main untouched at c5d408a)
+Git commit:    c5d408a2bd61901738785a8129f1a89dec31e3e8
+Tag/version:   v0.2.0 (working-tree release "Release MSLM research framework v0.2.0")
+
+Python:        3.9.6 (default, Apr 30 2025, 02:07:17)
+               [Clang 17.0.0 (clang-1700.0.13.5)]
+OS:            macOS 15.6 (BuildVersion 24G84)
+Kernel:        Darwin 24.6.0 (xnu-11417.140.69~1/RELEASE_ARM64_T8132) arm64
+CPU:           Apple M4
+GPU/arch:      arm64
+
+Working tree at capture: clean before baseline artifacts were added.
+Main branch NOT modified.
+
+Commands executed
+-----------------
+1) Unit/integration tests:
+   PYTHONPYCACHEPREFIX=/tmp/mslm-pycache python3 -m unittest discover -s tests -v
+   Result: Ran 54 tests ... OK  (exit 0)
+   Log: results/baseline/tests.log
+
+2) Baseline experiment (paper configuration):
+   PYTHONPATH=src PYTHONPYCACHEPREFIX=/tmp/mslm-pycache \
+     python3 -m mslm.experiments \
+       --iterations 1000 --benchmark-iterations 10000 --seed 2026 \
+       --output results/baseline
+   Result: exit 0
+   Artifacts: results/baseline/{experiment.json,experiment.log,ccrs.csv,
+              effectiveness.csv,performance.csv}
+
+Baseline headline numbers
+-------------------------
+Effectiveness (per chain, 1000 trials): blocked 1000, unexpected_approvals 0,
+  legitimate_controls_accepted 1000, Wilson 95% CI low 99.617%.
+CCRS raw: C1=9.30, C2=8.67, C3=9.221, C4=9.95345 (cap 9.8).
+Benchmark (10000 iter): median 15.167 us, p95 16.042 us, p99 21.666 us,
+  mean 15.108 us, control_mean 0.192 us.
+Note: latency is machine- and load-sensitive; the manuscript numbers
+  (median 15.042 / p95 15.417 / p99 17.334) match results/experiment.json
+  and results/performance.csv, not this fresh run. Both are "same machine
+  class, different run".

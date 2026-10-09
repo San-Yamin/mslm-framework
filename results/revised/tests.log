@@ -1,0 +1,295 @@
+test_all_encoded_attacks_blocked_at_expected_layer (test_experiments.ExperimentTests) ... ok
+test_benchmark_returns_distribution (test_experiments.ExperimentTests) ... ok
+test_cli_writes_machine_readable_evidence (test_experiments.ExperimentTests) ... ok
+test_effectiveness_is_deterministic (test_experiments.ExperimentTests) ... ok
+test_effectiveness_reports_real_variation_and_layer (test_experiments.ExperimentTests) ... ok
+test_authorization_call_suppresses_missing_authz_rule (test_l1.L1Tests) ... ok
+test_client_price_detected (test_l1.L1Tests) ... ok
+test_custom_auth_detected (test_l1.L1Tests) ... ok
+test_direct_reference_detected (test_l1.L1Tests) ... ok
+test_finding_ids_are_stable (test_l1.L1Tests) ... ok
+test_hardcoded_auth_secret_detected (test_l1.L1Tests) ... ok
+test_high_risk_is_rejected (test_l1.L1Tests) ... ok
+test_secure_code_approved (test_l1.L1Tests) ... ok
+test_sensitive_admin_without_authorization_detected (test_l1.L1Tests) ... ok
+test_syntax_error_is_fail_closed (test_l1.L1Tests) ... ok
+test_weak_crypto_calls_detected (test_l1.L1Tests) ... ok
+test_cross_merchant_access_denied (test_l2.L2Tests) ... ok
+test_idor_denied (test_l2.L2Tests) ... ok
+test_lists_are_recursively_minimized (test_l2.L2Tests) ... ok
+test_matching_merchant_accepted (test_l2.L2Tests) ... ok
+test_nested_secrets_removed (test_l2.L2Tests) ... ok
+test_owner_accepted (test_l2.L2Tests) ... ok
+test_pan_masked_and_cvv_removed (test_l2.L2Tests) ... ok
+test_unauthenticated_principal_denied (test_l2.L2Tests) ... ok
+test_user_can_read_own_transaction (test_l2.L2Tests) ... ok
+test_user_cannot_grant_permission (test_l2.L2Tests) ... ok
+test_amount_conversion (test_l3.L3Tests) ... ok
+test_each_bound_claim_is_enforced (test_l3.L3Tests) ... ok
+test_expired_token_rejected (test_l3.L3Tests) ... ok
+test_future_token_rejected (test_l3.L3Tests) ... ok
+test_invalid_amounts_rejected (test_l3.L3Tests) ... ok
+test_invalid_currency_rejected (test_l3.L3Tests) ... ok
+test_key_rotation_preserves_old_verification (test_l3.L3Tests) ... ok
+test_replay_is_rejected (test_l3.L3Tests) ... ok
+test_short_key_rejected (test_l3.L3Tests) ... ok
+test_signature_mutation_rejected (test_l3.L3Tests) ... ok
+test_valid_token (test_l3.L3Tests) ... ok
+test_cross_merchant_operator_cannot_issue_token (test_pipeline.PipelineTests) ... ok
+test_decisions_are_audited (test_pipeline.PipelineTests) ... ok
+test_l1_blocks_unapproved_merchant (test_pipeline.PipelineTests) ... ok
+test_l2_blocks_idor (test_pipeline.PipelineTests) ... ok
+test_l3_blocks_price_tampering (test_pipeline.PipelineTests) ... ok
+test_legitimate_payment_approved (test_pipeline.PipelineTests) ... ok
+test_onboarding_decision_is_audited (test_pipeline.PipelineTests) ... ok
+test_onboarding_integration_approves_clean_source (test_pipeline.PipelineTests) ... ok
+test_onboarding_integration_rejects_malicious_source (test_pipeline.PipelineTests) ... ok
+test_second_payment_is_replay (test_pipeline.PipelineTests) ... ok
+test_user_cannot_issue_merchant_token (test_pipeline.PipelineTests) ... ok
+test_baselines_and_ccrs_are_reported_together (test_plausibility.AggregatorComparisonTests) ... ok
+test_empty_and_invalid_inputs_rejected (test_plausibility.AggregatorComparisonTests) ... ok
+test_scalar_helpers (test_plausibility.AggregatorComparisonTests) ... ok
+test_permutation_invariance (test_plausibility.CcrsBehaviourTests) ... ok
+test_same_multiset_same_score_regardless_of_path_label (test_plausibility.CcrsBehaviourTests) ... ok
+test_unreachable_or_irrelevant_vulnerability_still_raises_ccrs (test_plausibility.CcrsBehaviourTests) ... ok
+test_declared_paper_chains_are_plausible (test_plausibility.PlausibilityTests) ... ok
+test_implausible_chain_is_not_scored (test_plausibility.PlausibilityTests) ... ok
+test_missing_metadata_fails_the_gate (test_plausibility.PlausibilityTests) ... ok
+test_plausible_chain_score_matches_ccrs (test_plausibility.PlausibilityTests) ... ok
+test_single_step_is_not_a_chain (test_plausibility.PlausibilityTests) ... ok
+test_classification_boundaries (test_risk.RiskTests) ... ok
+test_empty_rejected (test_risk.RiskTests) ... ok
+test_invalid_cap_rejected (test_risk.RiskTests) ... ok
+test_out_of_range_rejected (test_risk.RiskTests) ... ok
+test_paper_chain_c1 (test_risk.RiskTests) ... ok
+test_paper_chain_c2 (test_risk.RiskTests) ... ok
+test_paper_chain_c3 (test_risk.RiskTests) ... ok
+test_paper_chain_c4_is_capped_for_deployment (test_risk.RiskTests) ... ok
+test_single_score_is_unchanged (test_risk.RiskTests) ... ok
+test_zero_scores (test_risk.RiskTests) ... ok
+test_attack_inputs_actually_vary (test_scenarios.ScenarioTraceabilityTests) ... ok
+test_c1_runs_real_l1_analysis_and_detects_v1_v6 (test_scenarios.ScenarioTraceabilityTests) ... ok
+test_c2_blocks_on_ownership_and_minimises_response (test_scenarios.ScenarioTraceabilityTests) ... ok
+test_c3_l1_detects_weak_crypto_but_approves_then_l3_blocks_tamper (test_scenarios.ScenarioTraceabilityTests) ... ok
+test_c4_runs_real_l1_analysis_and_detects_all_four_indicators (test_scenarios.ScenarioTraceabilityTests) ... ok
+test_c4_short_circuits_at_l1_and_does_not_claim_later_layers (test_scenarios.ScenarioTraceabilityTests) ... ok
+test_every_chain_attack_matches_expected_layer (test_scenarios.ScenarioTraceabilityTests) ... ok
+test_every_chain_control_is_accepted (test_scenarios.ScenarioTraceabilityTests) ... ok
+test_trace_rows_contain_required_fields (test_scenarios.ScenarioTraceabilityTests) ... ok
+test_trials_are_deterministic_for_a_fixed_seed (test_scenarios.ScenarioTraceabilityTests) ... ok
+test_unknown_chain_rejected (test_scenarios.ScenarioTraceabilityTests) ... ok
+
+----------------------------------------------------------------------
+Ran 80 tests in 0.059s
+
+OK
+{
+  "ccrs": [
+    {
+      "amplification_percent": 24.0,
+      "assumption": "independent cumulative-complement aggregation",
+      "capped_sum": 10.0,
+      "chain": "C1",
+      "deployment_score": 9.3,
+      "max_cvss": 7.5,
+      "mean_cvss": 7.35,
+      "raw_score": 9.3,
+      "scores": [
+        7.5,
+        7.2
+      ],
+      "sequential_product": 5.4,
+      "severity": "critical"
+    },
+    {
+      "amplification_percent": 35.0,
+      "assumption": "independent cumulative-complement aggregation",
+      "capped_sum": 10.0,
+      "chain": "C2",
+      "deployment_score": 8.775,
+      "max_cvss": 6.5,
+      "mean_cvss": 6.5,
+      "raw_score": 8.775,
+      "scores": [
+        6.5,
+        6.5
+      ],
+      "sequential_product": 4.225,
+      "severity": "high"
+    },
+    {
+      "amplification_percent": 13.839506,
+      "assumption": "independent cumulative-complement aggregation",
+      "capped_sum": 10.0,
+      "chain": "C3",
+      "deployment_score": 9.221,
+      "max_cvss": 8.1,
+      "mean_cvss": 7.0,
+      "raw_score": 9.221,
+      "scores": [
+        8.1,
+        5.9
+      ],
+      "sequential_product": 4.779,
+      "severity": "critical"
+    },
+    {
+      "amplification_percent": 22.882099,
+      "assumption": "independent cumulative-complement aggregation",
+      "capped_sum": 10.0,
+      "chain": "C4",
+      "deployment_score": 9.8,
+      "max_cvss": 8.1,
+      "mean_cvss": 7.325,
+      "raw_score": 9.95345,
+      "scores": [
+        7.5,
+        7.2,
+        6.5,
+        8.1
+      ],
+      "sequential_product": 2.8431,
+      "severity": "critical"
+    }
+  ],
+  "duration_seconds": 0.002182,
+  "effectiveness": [
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 34.238,
+      "block_rate_percent": 100.0,
+      "blocked": 2,
+      "chain": "C1",
+      "distinct_attack_inputs": 2,
+      "expected_first_layer": "L1",
+      "first_layer_matches_all": true,
+      "indicators": "V1|V6",
+      "iterations": 2,
+      "legitimate_controls_accepted": 2,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 34.238,
+      "block_rate_percent": 100.0,
+      "blocked": 2,
+      "chain": "C2",
+      "distinct_attack_inputs": 2,
+      "expected_first_layer": "L2",
+      "first_layer_matches_all": true,
+      "indicators": "V2|V5",
+      "iterations": 2,
+      "legitimate_controls_accepted": 2,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 34.238,
+      "block_rate_percent": 100.0,
+      "blocked": 2,
+      "chain": "C3",
+      "distinct_attack_inputs": 2,
+      "expected_first_layer": "L3",
+      "first_layer_matches_all": true,
+      "indicators": "V3|V4",
+      "iterations": 2,
+      "legitimate_controls_accepted": 2,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 34.238,
+      "block_rate_percent": 100.0,
+      "blocked": 2,
+      "chain": "C4",
+      "distinct_attack_inputs": 2,
+      "expected_first_layer": "L1",
+      "first_layer_matches_all": true,
+      "indicators": "V1|V6|V2|V3",
+      "iterations": 2,
+      "legitimate_controls_accepted": 2,
+      "unexpected_approvals": 0
+    }
+  ],
+  "environment": {
+    "platform": "macOS-15.6-arm64-arm-64bit",
+    "processor": "arm",
+    "python": "3.9.6 (default, Apr 30 2025, 02:07:17) \n[Clang 17.0.0 (clang-1700.0.13.5)]"
+  },
+  "framework_version": "0.2.0",
+  "generated_at_unix": 1791533585.952207,
+  "limitations": [
+    "Synthetic controlled attacks exercising the encoded controls; not OWASP Juice Shop traffic",
+    "C1/C4 are blocked by the L1 gate, so later layers are not reached in those trials",
+    "L1 analyses Python AST only; mini-app JavaScript/TypeScript is out of scope",
+    "In-memory replay store; no distributed storage latency",
+    "Microbenchmark excludes network, database and TLS overhead"
+  ],
+  "parameters": {
+    "benchmark_iterations": 10,
+    "iterations_per_chain": 2,
+    "seed": 2026
+  },
+  "performance": [
+    {
+      "absolute_overhead_mean_us": 15.821,
+      "control_mean_us": 0.225,
+      "iterations": 10,
+      "max_us": 17.25,
+      "mean_us": 16.046,
+      "median_us": 15.834,
+      "min_us": 15.417,
+      "operation": "L2+L3 valid payment verification",
+      "overhead_percent_vs_control": 7025.222,
+      "p95_us": 17.25,
+      "p99_us": 17.25
+    }
+  ],
+  "plausibility": [
+    {
+      "ccrs": 9.3,
+      "chain": "C1",
+      "evidence": "tests/test_l1.py::test_custom_auth_detected; tests/test_scenarios.py | tests/test_l1.py::test_sensitive_admin_without_authorization_detected",
+      "gaps": "",
+      "notes": "Plausibility is analyst-declared metadata; CCRS itself is permutation invariant and does not encode order, reachability, or conditional dependence. An unreachable or irrelevant weakness still raises CCRS if it is included in the input set.",
+      "plausible": true,
+      "prerequisites": "attacker can reach the mini-app custom login handler | attacker holds a session that reaches a sensitive handler",
+      "step_count": 2,
+      "trust_boundaries": "user -> merchant mini-app | merchant mini-app -> backend service"
+    },
+    {
+      "ccrs": 8.775,
+      "chain": "C2",
+      "evidence": "tests/test_l2.py::test_idor_denied; tests/test_pipeline.py::test_l2_blocks_idor | tests/test_l2.py::test_pan_masked_and_cvv_removed",
+      "gaps": "",
+      "notes": "Plausibility is analyst-declared metadata; CCRS itself is permutation invariant and does not encode order, reachability, or conditional dependence. An unreachable or irrelevant weakness still raises CCRS if it is included in the input set.",
+      "plausible": true,
+      "prerequisites": "attacker can enumerate a victim-owned object reference | victim object is returned through a shared response path",
+      "step_count": 2,
+      "trust_boundaries": "user -> merchant API | merchant API -> client"
+    },
+    {
+      "ccrs": 9.221,
+      "chain": "C3",
+      "evidence": "tests/test_pipeline.py::test_l3_blocks_price_tampering | tests/test_l1.py::test_weak_crypto_calls_detected",
+      "gaps": "",
+      "notes": "Plausibility is analyst-declared metadata; CCRS itself is permutation invariant and does not encode order, reachability, or conditional dependence. An unreachable or irrelevant weakness still raises CCRS if it is included in the input set.",
+      "plausible": true,
+      "prerequisites": "attacker can alter the client-supplied payment amount before signing | merchant integrity helper relies on a weak digest",
+      "step_count": 2,
+      "trust_boundaries": "client -> merchant gateway | merchant mini-app -> integrity check"
+    },
+    {
+      "ccrs": 9.95345,
+      "chain": "C4",
+      "evidence": "tests/test_l1.py::test_custom_auth_detected | tests/test_l1.py::test_sensitive_admin_without_authorization_detected | tests/test_l2.py::test_idor_denied | tests/test_l3.py::test_each_bound_claim_is_enforced",
+      "gaps": "",
+      "notes": "Plausibility is analyst-declared metadata; CCRS itself is permutation invariant and does not encode order, reachability, or conditional dependence. An unreachable or irrelevant weakness still raises CCRS if it is included in the input set.",
+      "plausible": true,
+      "prerequisites": "attacker can reach the custom login handler | session reaches a sensitive handler without authorization | attacker enumerates a victim object reference | attacker alters the payment amount",
+      "step_count": 4,
+      "trust_boundaries": "user -> merchant mini-app | merchant mini-app -> backend | user -> merchant API | client -> merchant gateway"
+    }
+  ],
+  "schema_version": "1.0"
+}

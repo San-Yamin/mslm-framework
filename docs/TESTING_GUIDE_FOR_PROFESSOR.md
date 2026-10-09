@@ -41,7 +41,7 @@ python3 -m unittest discover -s tests -v
 Expected final output:
 
 ```text
-Ran 54 tests
+Ran 80 tests
 
 OK
 ```
@@ -49,7 +49,7 @@ OK
 `OK` means all defined test cases passed. It does not prove that the framework
 prevents every possible attack.
 
-### What the 54 tests cover
+### What the 80 tests cover
 
 - CCRS formula, caps, severity boundaries and invalid inputs
 - L1 AST-based detection and stable finding identifiers
@@ -157,7 +157,7 @@ order, amount, currency, time window and nonce, then prevents reuse.”
 
 ### Step 4 — Run the tests
 
-Show the command and the `Ran 54 tests — OK` result. Open one representative
+Show the command and the `Ran 80 tests — OK` result. Open one representative
 test for each layer:
 
 - `tests/test_l1.py`: risky merchant code is rejected
@@ -230,7 +230,7 @@ baseline-versus-defended results from a real isolated test run.
 
 ## 10. Testing checklist before submitting the paper
 
-- [ ] All 54 automated tests pass
+- [ ] All 80 automated tests pass
 - [ ] Exact test command is recorded
 - [ ] Controlled experiment is rerun with fixed parameters
 - [ ] `experiment.json` is preserved
@@ -247,7 +247,7 @@ baseline-versus-defended results from a real isolated test run.
 
 > We implemented MSLM as a reproducible Python research prototype with three
 > independently testable enforcement layers. The implementation was validated
-> using 54 automated tests covering CCRS computation, onboarding analysis,
+> using 80 automated tests covering CCRS computation, onboarding analysis,
 > authorization and ownership enforcement, response minimization, signed
 > payment claims, expiry, key rotation, and replay prevention. A seeded
 > synthetic evaluation executed each encoded attack chain alongside matched

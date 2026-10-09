@@ -1,0 +1,5 @@
+chain,iterations,blocked,unexpected_approvals,block_rate_percent,block_rate_ci95_low_percent,block_rate_ci95_high_percent,legitimate_controls_accepted,expected_first_layer
+C1,1000,1000,0,100.0,99.617,100.0,1000,L1
+C2,1000,1000,0,100.0,99.617,100.0,1000,L2
+C3,1000,1000,0,100.0,99.617,100.0,1000,L3
+C4,1000,1000,0,100.0,99.617,100.0,1000,L1

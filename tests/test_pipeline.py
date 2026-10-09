@@ -82,3 +82,27 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(event["outcome"], "blocked")
         self.assertEqual(event["layer"], "L2")
 
+    def test_onboarding_integration_rejects_malicious_source(self):
+        decision = self.gateway.onboard_merchant(
+            "m1", "def custom_auth(request):\n    return request\n"
+        )
+        self.assertFalse(decision.approved)
+        self.assertFalse(self.gateway.merchant_status["m1"])
+        blocked = self.gateway.process(Principal("u1", Role.USER), self.request, now=1001)
+        self.assertEqual(blocked.blocked_at, "L1")
+
+    def test_onboarding_integration_approves_clean_source(self):
+        decision = self.gateway.onboard_merchant(
+            "m1", "def health():\n    return 1\n"
+        )
+        self.assertTrue(decision.approved)
+        self.assertTrue(self.gateway.merchant_status["m1"])
+
+    def test_onboarding_decision_is_audited(self):
+        self.gateway.onboard_merchant(
+            "m1", "def custom_auth(request):\n    return request['amount']\n"
+        )
+        event = self.audit.snapshot()[-1]
+        self.assertEqual(event["event"], "merchant.onboard")
+        self.assertEqual(event["layer"], "L1")
+

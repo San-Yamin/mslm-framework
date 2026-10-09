@@ -1,9 +1,10 @@
 """Composition of MSLM layers for controlled attack-chain experiments."""
 
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, Optional
 
 from .audit import AuditLog
+from .l1 import OnboardingAuditor, OnboardingDecision
 from .l2 import (
     AccessDenied,
     Principal,
@@ -33,13 +34,42 @@ class Decision:
 
 
 class MSLMGateway:
-    def __init__(self, tokens: PriceTokenService, audit: AuditLog) -> None:
+    def __init__(
+        self,
+        tokens: PriceTokenService,
+        audit: AuditLog,
+        auditor: Optional[OnboardingAuditor] = None,
+    ) -> None:
         self.tokens = tokens
         self.audit = audit
+        self.auditor = auditor or OnboardingAuditor()
         self.merchant_status: Dict[str, bool] = {}
 
     def set_merchant_approval(self, merchant_id: str, approved: bool) -> None:
+        """Set the L1 gate directly.
+
+        Retained for explicit gate tests. Production onboarding should use
+        :meth:`onboard_merchant`, which derives the decision from code analysis.
+        """
         self.merchant_status[merchant_id] = approved
+
+    def onboard_merchant(self, merchant_id: str, source: str) -> OnboardingDecision:
+        """Run the L1 analyzer over a submission and apply its gate decision."""
+        decision = self.auditor.analyze(source)
+        self.merchant_status[merchant_id] = decision.approved
+        self.audit.record(
+            "merchant.onboard",
+            "approved" if decision.approved else "blocked",
+            "L1",
+            actor_id=merchant_id,
+            details={
+                "findings": [item.vulnerability_id for item in decision.findings],
+                "rule_ids": [item.rule_id for item in decision.findings],
+                "ccrs": None if decision.risk is None else decision.risk.raw_score,
+                "parse_error": decision.parse_error,
+            },
+        )
+        return decision
 
     def issue_token(
         self,
