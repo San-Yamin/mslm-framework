@@ -54,10 +54,19 @@ recomputed. No vectors were fabricated.
 Location: `reports/cvss_justification.md`, `reports/manuscript_revisions_paste_ready.md` A5/A4b.
 
 **6. Clarify the relationship between Juice Shop and the Python prototype.**
-Action: Audited the artifact: no Juice Shop materials exist. The manuscript claim
-is flagged for correction rather than back-filled. **[AUTHOR DECISION]** either
-produce pinned artifacts or change §VII-A/the Abstract.
-Location: `reports/cvss_justification.md` §5, `reports/manuscript_revision_notes.md` A1.
+Action: Located and reviewed 27 Juice Shop screenshots (OWASP Juice Shop v20.0.0,
+Node v25.6.0, `Express ^4.22.1`, 2026-06-17). Verified reproduced patterns:
+weak-password registration accepted (`123`), a login JWT embedding the user's
+password hash, tokens in browser local storage, over-broad unauthenticated
+`/api/products`, and misconfigured response headers. Verified **failed** attempts:
+IDOR requests to `/api/users/{1,2,3}` all returned `401`; price-tampering to
+`PUT /api/BasketItems/9` was accepted at the API but the final charge is not
+shown. No complete attack chain and **no MSLM control** was exercised in Juice
+Shop. §VII-A, the Abstract, §III.C and §VIII.C were rewritten to separate the
+Juice Shop pattern examination from the Python-only MSLM evaluation.
+**[AUTHOR DECISION]** confirm the two account identities (`sanyamin2005@gmail.com`
+vs `demo@gmail.com`) and the provenance of the custom `ADMIN_TOKEN`.
+Location: `reports/juice_shop_evidence_review.md`, `manuscript_revisions_paste_ready.md` A1.
 
 ## Reviewer II
 
@@ -117,5 +126,7 @@ representation"), manuscript §VI-B, README.
 ## Items requiring author action
 
 1. Publish CVSS v3.1 vectors; re-derive V5.
-2. Correct or support the OWASP Juice Shop claim.
-3. Apply wording changes A1–A8 from `reports/manuscript_revision_notes.md`.
+2. Confirm the Juice Shop account identities and `ADMIN_TOKEN` provenance
+   (see `reports/juice_shop_evidence_review.md` §7); apply the evidence-limited
+   Juice Shop wording (A1 in `reports/manuscript_revisions_paste_ready.md`).
+3. Apply wording changes A1–A10 from `reports/manuscript_revisions_paste_ready.md`.

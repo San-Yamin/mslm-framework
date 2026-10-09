@@ -11,13 +11,22 @@ proposals to be verified against the official FIRST.org calculator.
 
 ## A1. OWASP Juice Shop claim (Reviewer I.6)
 
+> **Evidence update (2026-10-09):** 27 Juice Shop screenshots were located and
+> reviewed (`reports/juice_shop_evidence_review.md`). They confirm the instance
+> (`OWASP Juice Shop v20.0.0`, Node v25.6.0, `Express ^4.22.1`, 2026-06-17) and
+> show several patterns observed, but **not** IDOR, **not** a complete attack
+> chain, and **no** MSLM control. The replacements below are now evidence-limited
+> rather than claims of successful reproduction. A human should visually confirm
+> the OCR-derived readings before submission.
+
 ### A1a. Abstract — FIND
 > Selected vulnerability patterns were reproduced in a controlled OWASP Juice Shop
 > v20.0.0 environment.
 
 ### A1a. Abstract — REPLACE
-> Selected vulnerability patterns were modeled in a controlled synthetic Python
-> test harness informed by documented mini-app and web vulnerability taxonomies.
+> Representative weakness patterns were observed in a local OWASP Juice Shop
+> v20.0.0 instance, while the MSLM prototype and all defense experiments were
+> evaluated in a separate synthetic Python test harness.
 
 ### A1b. §III.C — FIND
 > Motivated by the anonymized industry report and controlled OWASP Juice Shop
@@ -25,12 +34,13 @@ proposals to be verified against the official FIRST.org calculator.
 > encodes their defensive conditions in the Python test harness (Table I).
 
 ### A1b. §III.C — REPLACE
-> Motivated by the anonymized industry report and by documented public examples of
-> these weakness classes, this study defines six vulnerability classes for
-> analysis and encodes their defensive conditions in the Python test harness
-> (Table I). The classes are mapped to explicit scenario assumptions, and the
-> corresponding CVSS v3.1 vectors are listed in Table I; the vectors describe the
-> modeled scenario rather than a scanned production application.
+> Motivated by the anonymized industry report and by representative weakness
+> patterns observed in a local OWASP Juice Shop v20.0.0 instance, this study
+> defines six vulnerability classes for analysis and encodes their defensive
+> conditions in the Python test harness (Table I). The classes are mapped to
+> explicit scenario assumptions, and the corresponding CVSS v3.1 vectors are
+> listed in Table I; the vectors describe the modeled scenario rather than a
+> scanned production application.
 
 ### A1c. §VII.A — FIND
 > Selected vulnerability patterns were manually reproduced in a local OWASP Juice
@@ -38,24 +48,34 @@ proposals to be verified against the official FIRST.org calculator.
 > 3.9.6 on macOS 15.6 arm64.
 
 ### A1c. §VII.A — REPLACE
-> The evaluation was conducted with the MSLM v0.2.0 Python prototype on Python
-> 3.9.6 running on macOS 15.6 arm64. The vulnerable patterns were modeled in a
-> controlled synthetic harness rather than reproduced in an external application;
-> no external application (such as OWASP Juice Shop [11]) was instrumented as part
-> of the reproducible artifact.
+> A local OWASP Juice Shop v20.0.0 instance (Node.js v25.6.0, `Express ^4.22.1`,
+> `http://localhost:3000`, 2026-06-17) was examined only to observe representative
+> weakness patterns: acceptance of a weak registration password; a login JWT whose
+> decoded payload embedded the user's password hash; tokens present in browser
+> local storage; over-broad unauthenticated product records from `/api/products`;
+> and misconfigured response headers. Attempts to access `/api/users/{1,2,3}`
+> without authorization returned `401`, so an IDOR pattern was **not** reproduced;
+> a client-supplied `totalPrice` was accepted by `PUT /api/BasketItems/9`, but the
+> resulting order total was not captured, so price manipulation is reported as an
+> **attempt only**. No complete attack chain was reproduced in Juice Shop, and no
+> MSLM control was exercised there. The MSLM v0.2.0 prototype and all defense
+> experiments were evaluated separately using Python 3.9.6 on macOS 15.6 arm64.
 
 ### A1d. §VIII.C — FIND
 > First, the OWASP Juice Shop reproduction and synthetic Python harness do not
 > establish production-level external validity [11].
 
 ### A1d. §VIII.C — REPLACE
-> First, the synthetic Python harness and the modeled scenarios do not establish
-> production-level external validity; no external application was instrumented as
-> part of the reproducible artifact.
+> First, the Juice Shop examination was observational and partial: IDOR attempts
+> were rejected (`401`), price manipulation was not demonstrated end-to-end, no
+> complete attack chain was reproduced, and no MSLM control was exercised in Juice
+> Shop. Together with the synthetic Python harness, these results do not establish
+> production-level external validity.
 
-> **Note:** if the authors *do* have Juice Shop artifacts (container digest,
-> scripts, traces, logs), keep the original claim and cite the artifacts instead.
-> Do not keep the claim without artifacts.
+> **Note:** the screenshots are terminal/browser captures, not pinned artifacts
+> (no container digest, compose file, or full request/response logs). If pinned
+> artifacts are produced, the capture detail can be expanded; do not strengthen the
+> claim beyond what the screenshots show.
 
 ---
 
@@ -251,7 +271,7 @@ If Juice Shop is removed from the methodology and limitations, either:
 
 ## Checklist
 
-- [ ] Apply A1a–A1d (or restore claim with real artifacts).
+- [ ] Apply A1a–A1d (evidence-limited wording; screenshots are not pinned artifacts).
 - [ ] Apply A2a–A2c.
 - [ ] Apply A3 (chain qualification paragraph).
 - [ ] Apply A4; remove superiority wording.

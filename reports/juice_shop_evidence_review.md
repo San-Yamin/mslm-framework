@@ -1,0 +1,169 @@
+# OWASP Juice Shop Evidence Review (Reviewer I.6)
+
+Paper 26012 · "A Cumulative Chained Risk Metric for Securing FinTech Mini-App Ecosystems" · prepared 2026-10-09
+
+Source: `Documents/My Paper Journey/Juice Shop Set Up/` — 27 PNG screenshots, file mtimes 2026-06-17, in-band dates 2026-06-17.
+
+## 0. Method and honesty disclaimer
+
+The reviewing model **cannot view images directly** (no image input support). Each PNG was
+processed with the macOS Vision framework (OCR) to extract the visible text — terminal
+commands, HTTP responses, browser UI, and DevTools panels. The analysis below is based on
+that extracted text only.
+
+Consequences:
+- Text/values recorded here are **OCR transcriptions**; a human must visually confirm each
+  screenshot before publication. OCR may misread glyphs (e.g., base64 JWT characters).
+- No finding is inferred from pixels/colors; only from recognized text.
+- **Nothing below is fabricated.** Where the screenshots do not prove something, it is marked
+  as not proven.
+
+## 1. Environment facts verifiable from the screenshots
+
+| Fact | Value | Source screenshots |
+|---|---|---|
+| Application version | `juice-shop@20.0.0` (`> juice-shop@20.0.0 start`) | 4.23.14 / 4.23.30 / 4.23.46 PM |
+| Runtime | Node.js `v25.6.0`, OS `darwin`, CPU `arm64` | same |
+| Server framework | `OWASP Juice Shop (Express ^4.22.1)` (error page) | IDOR 1/2/3, 4.23.x |
+| Base URL | `http://localhost:3000` | all curl screenshots |
+| Benchmark dates | `2026-06-17` (HTTP `Date`, DB `createdAt`) | several |
+
+These match the manuscript's stated `OWASP Juice Shop v20.0.0`. No container image digest or
+docker-compose file is present in the evidence.
+
+## 2. Evidence matrix (all 27 files)
+
+Legend — Type: **SUCCESS** = a response/state that demonstrates the effect; **ATTEMPT** = request
+made but the effect did not occur / not demonstrated; **SETUP** = UI/HTML/functional, no security
+claim. Confidence = confidence that the *stated finding* is supported by the OCR text.
+
+| # | Filename | Type | Request / observed | Finding | Confidence | Maps to |
+|---|---|---|---|---|---|---|
+| 1 | All Product Data Exposed.png | SUCCESS | `curl http://localhost:3000/api/products` → `{"status":"success","data":[...]}` full product records incl. `deluxePrice`, `createdAt`, `deletedAt` | Unauthenticated product API returns over-broad records (extra pricing/internal fields) | Med | V5 (loose) |
+| 2 | IDOR (Insecure Direct Object Reference) 1.png | ATTEMPT | `curl http://localhost:3000/api/users/3` → **401 UnauthorizedError** | IDOR **not** achieved; auth enforced; server log "Blocked illegal activity" | High (failed) | V2 (not reproduced) |
+| 3 | IDOR (Insecure Direct Object Reference) 2.png | ATTEMPT | `curl .../api/users/2` → **401** | IDOR not achieved | High (failed) | V2 (not reproduced) |
+| 4 | IDOR (Insecure Direct Object Reference) 3.png | ATTEMPT | `curl .../api/users/1` → **401** | IDOR not achieved | High (failed) | V2 (not reproduced) |
+| 5 | IDOR (Insecure Direct Object Reference).png | ATTEMPT | `/api/users/...` → **401**; repeated "Blocked illegal activity by ::1" | IDOR not achieved | High (failed) | V2 (not reproduced) |
+| 6 | SECURITY MISCONFIGURATION.png | SUCCESS | `curl -i http://localhost:3000/` → `200` with `Access-Control-Allow-Origin: *`, `X-Recruiting: /#/jobs`, `Feature-Policy`, `X-Frame-Options: SAMEORIGIN` | Misconfigured/verbose response headers (wildcard CORS on root; recruiting header) | Med | (misconfig, not V1–V6) |
+| 7 | SENSITIVE DATA EXPOSURE.png | SUCCESS | duplicate of #1 (`/api/products`, full records) | Over-broad product data exposure | Med | V5 (loose) |
+| 8 | Screenshot 2026-06-17 at 1.00.38 PM.png | SETUP | Login page UI; URL `localhost:3000/#/forgot-password` | none | High (setup) | — |
+| 9 | Screenshot 2026-06-17 at 1.08.17 PM.png | SETUP | Login form filled: `sanyamin2005@gmail.com` / `ResearchDemo@2026` | none (credential entry only) | High (setup) | — |
+| 10 | Screenshot 2026-06-17 at 12.59.00 PM.png | SETUP | All Products UI | none | High (setup) | — |
+| 11 | Screenshot 2026-06-17 at 12.59.12 PM.png | SETUP | Product list UI | none | High (setup) | — |
+| 12 | Screenshot 2026-06-17 at 12.59.18 PM.png | SETUP | Product list UI ("1 - 16 of 46") | none | High (setup) | — |
+| 13 | Screenshot 2026-06-17 at 4.23.14 PM.png | ATTEMPT+INFO | `npm start` (v20.0.0, Node v25.6.0) and `curl .../api/users/1` → **401** | IDOR not achieved; version captured | High | V2 (not reproduced) |
+| 14 | Screenshot 2026-06-17 at 4.23.30 PM.png | ATTEMPT | `curl .../api/users/2` → **401** | IDOR not achieved | High (failed) | V2 (not reproduced) |
+| 15 | Screenshot 2026-06-17 at 4.23.46 PM.png | ATTEMPT | `curl .../api/users/3` → **401** | IDOR not achieved | High (failed) | V2 (not reproduced) |
+| 16 | Screenshot 2026-06-17 at 4.53.02 PM.png | SETUP | Full root-page HTML (from a `curl -i /`) | none | High (setup) | — |
+| 17 | Screenshot 2026-06-17 at 5.06.48 PM.png | SUCCESS | DevTools: `POST http://localhost:3000/api/Users/` → **201 Created**, `Location: /api/Users/26` | Account registration succeeded (functional) | High | (functional) |
+| 18 | Screenshot 2026-06-17 at 5.06.58 PM.png | SETUP | Request headers (Cookie `continueCode=…`, Android UA) | none | High (setup) | — |
+| 19 | Screenshot 2026-06-17 at 5.07.07 PM.png | SETUP | Request headers incl. custom `X-User-Email: demo@gmail.com` | none (header observed) | Med | — |
+| 20 | Screenshot 2026-06-17 at 5.11.31 PM.png | SUCCESS | DevTools→Application→Local Storage: keys `ADMIN_TOKEN` (`uitctf_admin_9f3b2d7a5c1e…`), `email=demo@gmail.com`, `token=eyJ0eXAi…` | Sensitive tokens present in client-side storage | High (keys/values present); Low (that ADMIN_TOKEN is server-issued) | V5 / V1 (loose) |
+| 21 | Screenshot 2026-06-17 at 5.11.58 PM.png | SUCCESS | same storage, full values incl. `ADMIN_TOKEN=uitctf_admin_9f3b2d7a5c1e4f8b0a6d2c9e7b1a4f0d_2026` | same as #20 | High | V5 / V1 (loose) |
+| 22 | Screenshot 2026-06-17 at 5.14.39 PM.png | SUCCESS | jwt.io decode of login JWT (RS256): payload `{"status":"success","data":{"id":26,"email":"demo@gmail.com","password":"793239beed23cff0a99388438be89eae","role":"customer",…}}` | **Login JWT embeds the user's password hash** | High (decoded JSON visible) | V5 (strong); V1 |
+| 23 | Screenshot 2026-06-17 at 5.15.11 PM.png | SUCCESS | duplicate of #22 | same as #22 | High | V5 (strong); V1 |
+| 24 | Screenshot 2026-06-17 at 5.27.09 PM.png | SUCCESS | DevTools: `POST .../BasketItems/` → `{"status":"success","data":{"id":9,"ProductId":1,"BasketId":6,"quantity":2,…}}` | Basket add (functional) | High | (functional) |
+| 25 | Screenshot 2026-06-17 at 5.35.35 PM.png | ATTEMPT (partial) | `curl -X PUT .../api/BasketItems/9 -H "Authorization: Bearer <JWT>" -d '{"quantity":2,"totalPrice":0.01}'` → `{"status":"success",...}` | Client-supplied `totalPrice` accepted by the server; **final charged total not shown** | Med | V3 (partial) |
+| 26 | Screenshot 2026-06-17 at 6.03.19 PM.png | SETUP | DevTools: `POST /api/Users/` payload `{email:"demo@gmail.com",password:"Demo@2026",passwordRepeat:"Demo@2026",securityAnswer:"san",…}` | Registration (functional) | High | (functional) |
+| 27 | Weak Authentication.png | SUCCESS | `curl -X POST http://localhost:3000/api/users -d '{"email":"test1@test.com","password":"123","passwordRepeat":"123"}'` → `{"status":"success","data":{"id":25,"email":"test1@test.com",…}}` | **Weak password `123` accepted; account created** | High | V1 (strong) |
+
+## 3. Summary: reproduced vs attempted vs neutral
+
+**Reproduced (SUCCESS, security-relevant):** #1, #6, #7, #20, #21, #22, #23, #25, #27 (9).
+**Attempted but NOT successful:** #2, #3, #4, #5, #13, #14, #15 (7; all IDOR → 401).
+**Neutral setup / functional / UI:** #8, #9, #10, #11, #12, #16, #17, #18, #19, #24, #26 (11).
+
+## 4. Mapping to V1–V6
+
+| ID | Vulnerability | Juice Shop status | Evidence |
+|---|---|---|---|
+| V1 | Broken Authentication | **Partially reproduced** | Weak password accepted (#27); login JWT carries password hash (#22/#23) |
+| V2 | IDOR | **NOT reproduced** | All `/api/users/{1,2,3}` attempts returned **401** (#2–5, #13–15) |
+| V3 | Client-side price manipulation | **Attempt only (partial)** | `PUT /api/BasketItems/9` accepted `totalPrice:0.01` (#25); final price change not shown |
+| V4 | Weak cryptographic implementation | **NOT reproduced** | JWT is **RS256** (#22/#23), i.e., not weak; no MD5/SHA1 evidence |
+| V5 | Sensitive data exposure | **Reproduced** | Password hash inside login JWT (#22/#23); tokens in localStorage (#20/#21); over-broad `/api/products` fields (#1/#7) |
+| V6 | Missing authorization | **NOT reproduced** | Unauthenticated user API access returned **401** (auth/authorization enforced) |
+
+## 5. Mapping to C1–C4
+
+**No attack chain was demonstrated in Juice Shop.** Only isolated single-step observations exist.
+
+| Chain | Composition | Juice Shop status |
+|---|---|---|
+| C1 | V1 → V6 | Not reproduced as a chain (V1 partial, V6 not reproduced) |
+| C2 | V2 → V5 | Not reproduced (V2 401); only V5 isolated |
+| C3 | V3 → V4 | Not reproduced; only the V3 price-tamper attempt (#25) |
+| C4 | V1 → V6 → V2 → V3 | Not reproduced |
+
+## 6. Juice Shop vs Python MSLM experiments (must stay separate)
+
+- **Juice Shop (this evidence):** observations and *attempts* against a third-party vulnerable
+  application. No MSLM component was installed, invoked, or tested here.
+- **MSLM enforcement:** evaluated **only** in the Python harness (`src/mslm/`, `results/revised/`).
+- **No screenshots prove** that MSLM blocked—or was even present at—any Juice Shop request.
+- **No screenshots prove** end-to-end chain exploitation.
+
+## 7. Gaps, limitations, and inconsistencies to resolve
+
+1. **No container image digest / compose file / full logs.** Reproducibility is partial
+   (terminal screenshots + version string only).
+2. **IDOR failed (401).** The manuscript must not imply IDOR was reproduced in Juice Shop.
+3. **Price tampering unproven.** #25 shows the server accepted a `totalPrice` field, but the
+   resulting order total is not shown, so manipulation of the final charge is not demonstrated.
+4. **`ADMIN_TOKEN` provenance unknown.** `uitctf_admin_…_2026` is not a stock Juice Shop
+   artifact; it appears to be a custom/CTF-seeded value. Do not present it as a default
+   Juice Shop secret.
+5. **Account inconsistency.** Login screenshot #9 uses `sanyamin2005@gmail.com`, while the
+   created account and JWT use `demo@gmail.com` (#17–#26). Confirm which account the reported
+   observations used.
+6. **OCR uncertainty.** JWT/base64 strings and a few fields may contain OCR errors; verify
+   visually.
+7. **No timestamps from a trusted capture tool** (only file mtimes and in-band `Date`).
+
+## 8. Revised Juice Shop methodology (manuscript-ready, evidence-limited)
+
+> **§VII-A (replacement text).** A subset of vulnerability patterns was examined in a local
+> OWASP Juice Shop v20.0.0 instance (Node.js v25.6.0, `Express ^4.22.1`, macOS arm64,
+> `http://localhost:3000`) on 2026-06-17. The following were **observed** in the instance:
+> (i) acceptance of a weak registration password (`123`) [#27]; (ii) a login JWT whose decoded
+> payload embedded the user's password hash [#22–#23], and user/administrator tokens present in
+> browser local storage [#20–#21]; and (iii) over-broad unauthenticated product records from
+> `/api/products` [#1, #7], together with verbose/over-permissive response headers [#6]. By
+> contrast, attempts to access `/api/users/{1,2,3}` without authorization returned **401**
+> (`UnauthorizedError`) [#2–#5, #13–#15], so an IDOR pattern was **not** reproduced; a
+> client-supplied `totalPrice` was accepted by `PUT /api/BasketItems/9` [#25] but the resulting
+> order total was not captured, so price manipulation is reported as an **attempt only**. No
+> complete multi-step attack chain was reproduced in Juice Shop, and **no MSLM control was
+> exercised in Juice Shop**; MSLM enforcement is evaluated exclusively in the Python prototype
+> (Section VII-B–D).
+
+## 9. Reviewer I.6 response (draft)
+
+> **Comment.** Clarify the relationship between the OWASP Juice Shop experiments and the Python
+> prototype, and state which attack scenarios were reproduced in Juice Shop versus only in the
+> Python harness.
+>
+> **Response.** We thank the reviewer and have replaced the ambiguous claim. In the revised
+> manuscript we distinguish two independent activities. (1) *Juice Shop pattern examination*: in
+> a local OWASP Juice Shop v20.0.0 instance we observed a weak-password registration accepted
+> [#27], a login token exposing the user's password hash and client-stored tokens [#20–#23], and
+> over-broad product data/misconfigured headers [#1, #6–#7]. IDOR attempts on `/api/users/{1,2,3}`
+> were rejected with 401 [#2–#5, #13–#15], and a price-tampering attempt was accepted at the API
+> but not shown to alter the final charge [#25]; we therefore do **not** claim IDOR or price
+> manipulation were reproduced. (2) *MSLM evaluation*: the MSLM prototype and the C1–C4
+> enforcement experiments were conducted **only** in the Python harness; no Juice Shop request
+> passed through MSLM, and no complete attack chain was reproduced in Juice Shop. The revised
+> §VII-A states exactly which patterns were observed, which failed, and that the two
+> environments are separate. Pipeline evidence for the Juice Shop examination is provided in the
+> supplementary screenshots (27 images) and summarized in `reports/juice_shop_evidence_review.md`.
+
+## 10. Recommended manuscript edits (supersedes paste-ready A1)
+
+- Abstract: remove "reproduced in a controlled OWASP Juice Shop v20.0.0 environment"; replace
+  with the evidence-limited phrasing in §8.
+- §III.C: change "controlled OWASP Juice Shop reproduction" to "a local OWASP Juice Shop v20.0.0
+  instance used for pattern examination".
+- §VII.A: adopt the §8 text.
+- §VIII.C: change the limitation to state that only **isolated patterns were observed** (IDOR
+  failed; price tampering unproven) and that no chain or MSLM control was exercised in Juice Shop.
+- Keep the existing statement that the Python harness does not establish production validity.
