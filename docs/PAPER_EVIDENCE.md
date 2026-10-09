@@ -3,6 +3,12 @@
 This document distinguishes implemented evidence from claims requiring an external
 experiment. It should be used to complete Sections VII-C and VII-D after execution.
 
+> **Revision status (ICAIT 2026, Paper 26012).** The C1–C4 harness now runs the
+> real L1 analyzer and emits per-trial traces (`results/revised/trials.csv`).
+> See `reports/experiment_methodology.md`, `reports/cvss_justification.md`,
+> `reports/manuscript_revision_notes.md`, and `reports/reviewer_evidence_matrix.md`.
+> The Juice Shop section below remains authoritative: those artifacts do not exist.
+
 ## Section VII-C — MSLM defense effectiveness
 
 Report, for every chain:
@@ -60,6 +66,7 @@ uses synthetic controlled scenarios inspired by the taxonomy.
 
 - Table III average CCRS is not 9.91. The four raw scores are approximately
   9.30, 8.67, 9.22 and 9.95, whose arithmetic mean is approximately 9.28.
+  (Resolved in the current manuscript: Table VI reports 9.286.)
 - Section IV-B's formula yields “at least one succeeds” under independence; “by
   extension the chain succeeds” is not mathematically justified for sequential
   all-step chains.

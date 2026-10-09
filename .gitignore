@@ -10,6 +10,8 @@ build/
 *.egg-info/
 *.db
 .env
+# Ephemeral top-level experiment outputs only (the pattern is anchored, so
+# results/baseline/ and results/revised/ evidence remain trackable).
 results/*.json
 results/*.csv
 .DS_Store

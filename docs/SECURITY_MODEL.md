@@ -17,6 +17,33 @@
 | L2 | Deny-by-default permissions and ownership | Authentication provider correctness |
 | L3 | Integrity, context binding, expiry, single use | Merchant business-logic correctness |
 
+## L1 language scope and mini-app representation
+
+L1 parses **Python source** with the standard-library `ast` module and applies
+explainable indicator rules (`src/mslm/l1.py`). It does not parse JavaScript,
+TypeScript, WXML/WXSS, WebAssembly, or packaged mini-app bundles. This is a
+deliberate research simplification with the following consequences:
+
+- **What is analysed.** A single Python module string submitted for onboarding.
+  Rules detect: custom login handlers (V1), hard-coded authentication literals
+  (V1), sensitive handlers without a visible authorization call (V6), weak
+  primitives (`hashlib.md5`, `hashlib.sha1`, `random.*`) (V4), client-supplied
+  price reads (V3), direct object references (V2), and bulk serialisation (V5).
+- **Relation to a real mini-app submission.** In a production platform the
+  onboarding pipeline would receive a packaged JS/TS bundle. L1 as implemented
+  is best understood as a *front-end-agnostic policy core*: the same rule
+  expressions could be applied to a JS/TS AST (or to a translated
+  intermediate representation), but that translation layer is **not**
+  implemented or evaluated here.
+- **Deployment limits.** Precision/recall on a labelled mini-app corpus are
+  unknown; there is no confidence scoring; rule hits are indicators, not
+  confirmed vulnerabilities; and findings are deduplicated by `(rule, line)`,
+  which assumes the submission preserves line structure.
+- **Claim boundary.** The manuscript must not state or imply that L1 scans
+  production JavaScript/TypeScript mini-apps. It should say L1 is a
+  Python-AST prototype detector used to demonstrate the onboarding gate, and
+  that adapting it to mini-app languages is future work.
+
 ## Production substitutions
 
 The experiment uses an in-memory key ring, replay store, approval registry and audit

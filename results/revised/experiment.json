@@ -1,0 +1,210 @@
+{
+  "ccrs": [
+    {
+      "amplification_percent": 24.0,
+      "assumption": "independent cumulative-complement aggregation",
+      "capped_sum": 10.0,
+      "chain": "C1",
+      "deployment_score": 9.3,
+      "max_cvss": 7.5,
+      "mean_cvss": 7.35,
+      "raw_score": 9.3,
+      "scores": [
+        7.5,
+        7.2
+      ],
+      "sequential_product": 5.4,
+      "severity": "critical"
+    },
+    {
+      "amplification_percent": 33.384615,
+      "assumption": "independent cumulative-complement aggregation",
+      "capped_sum": 10.0,
+      "chain": "C2",
+      "deployment_score": 8.67,
+      "max_cvss": 6.5,
+      "mean_cvss": 6.35,
+      "raw_score": 8.67,
+      "scores": [
+        6.5,
+        6.2
+      ],
+      "sequential_product": 4.03,
+      "severity": "high"
+    },
+    {
+      "amplification_percent": 13.839506,
+      "assumption": "independent cumulative-complement aggregation",
+      "capped_sum": 10.0,
+      "chain": "C3",
+      "deployment_score": 9.221,
+      "max_cvss": 8.1,
+      "mean_cvss": 7.0,
+      "raw_score": 9.221,
+      "scores": [
+        8.1,
+        5.9
+      ],
+      "sequential_product": 4.779,
+      "severity": "critical"
+    },
+    {
+      "amplification_percent": 22.882099,
+      "assumption": "independent cumulative-complement aggregation",
+      "capped_sum": 10.0,
+      "chain": "C4",
+      "deployment_score": 9.8,
+      "max_cvss": 8.1,
+      "mean_cvss": 7.325,
+      "raw_score": 9.95345,
+      "scores": [
+        7.5,
+        7.2,
+        6.5,
+        8.1
+      ],
+      "sequential_product": 2.8431,
+      "severity": "critical"
+    }
+  ],
+  "duration_seconds": 1.149068,
+  "effectiveness": [
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 99.617,
+      "block_rate_percent": 100.0,
+      "blocked": 1000,
+      "chain": "C1",
+      "distinct_attack_inputs": 1000,
+      "expected_first_layer": "L1",
+      "first_layer_matches_all": true,
+      "indicators": "V1|V6",
+      "iterations": 1000,
+      "legitimate_controls_accepted": 1000,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 99.617,
+      "block_rate_percent": 100.0,
+      "blocked": 1000,
+      "chain": "C2",
+      "distinct_attack_inputs": 1000,
+      "expected_first_layer": "L2",
+      "first_layer_matches_all": true,
+      "indicators": "V2|V5",
+      "iterations": 1000,
+      "legitimate_controls_accepted": 1000,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 99.617,
+      "block_rate_percent": 100.0,
+      "blocked": 1000,
+      "chain": "C3",
+      "distinct_attack_inputs": 958,
+      "expected_first_layer": "L3",
+      "first_layer_matches_all": true,
+      "indicators": "V3|V4",
+      "iterations": 1000,
+      "legitimate_controls_accepted": 1000,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 99.617,
+      "block_rate_percent": 100.0,
+      "blocked": 1000,
+      "chain": "C4",
+      "distinct_attack_inputs": 1000,
+      "expected_first_layer": "L1",
+      "first_layer_matches_all": true,
+      "indicators": "V1|V6|V2|V3",
+      "iterations": 1000,
+      "legitimate_controls_accepted": 1000,
+      "unexpected_approvals": 0
+    }
+  ],
+  "environment": {
+    "platform": "macOS-15.6-arm64-arm-64bit",
+    "processor": "arm",
+    "python": "3.9.6 (default, Apr 30 2025, 02:07:17) \n[Clang 17.0.0 (clang-1700.0.13.5)]"
+  },
+  "framework_version": "0.2.0",
+  "generated_at_unix": 1791530769.3996742,
+  "limitations": [
+    "Synthetic controlled attacks exercising the encoded controls; not OWASP Juice Shop traffic",
+    "C1/C4 are blocked by the L1 gate, so later layers are not reached in those trials",
+    "L1 analyses Python AST only; mini-app JavaScript/TypeScript is out of scope",
+    "In-memory replay store; no distributed storage latency",
+    "Microbenchmark excludes network, database and TLS overhead"
+  ],
+  "parameters": {
+    "benchmark_iterations": 10000,
+    "iterations_per_chain": 1000,
+    "seed": 2026
+  },
+  "performance": [
+    {
+      "absolute_overhead_mean_us": 15.335,
+      "control_mean_us": 0.191,
+      "iterations": 10000,
+      "max_us": 27.833,
+      "mean_us": 15.526,
+      "median_us": 15.5,
+      "min_us": 13.792,
+      "operation": "L2+L3 valid payment verification",
+      "overhead_percent_vs_control": 8028.556,
+      "p95_us": 15.792,
+      "p99_us": 17.541
+    }
+  ],
+  "plausibility": [
+    {
+      "ccrs": 9.3,
+      "chain": "C1",
+      "evidence": "tests/test_l1.py::test_custom_auth_detected; tests/test_scenarios.py | tests/test_l1.py::test_sensitive_admin_without_authorization_detected",
+      "gaps": "",
+      "notes": "Plausibility is analyst-declared metadata; CCRS itself is permutation invariant and does not encode order, reachability, or conditional dependence. An unreachable or irrelevant weakness still raises CCRS if it is included in the input set.",
+      "plausible": true,
+      "prerequisites": "attacker can reach the mini-app custom login handler | attacker holds a session that reaches a sensitive handler",
+      "step_count": 2,
+      "trust_boundaries": "user -> merchant mini-app | merchant mini-app -> backend service"
+    },
+    {
+      "ccrs": 8.67,
+      "chain": "C2",
+      "evidence": "tests/test_l2.py::test_idor_denied; tests/test_pipeline.py::test_l2_blocks_idor | tests/test_l2.py::test_pan_masked_and_cvv_removed",
+      "gaps": "",
+      "notes": "Plausibility is analyst-declared metadata; CCRS itself is permutation invariant and does not encode order, reachability, or conditional dependence. An unreachable or irrelevant weakness still raises CCRS if it is included in the input set.",
+      "plausible": true,
+      "prerequisites": "attacker can enumerate a victim-owned object reference | victim object is returned through a shared response path",
+      "step_count": 2,
+      "trust_boundaries": "user -> merchant API | merchant API -> client"
+    },
+    {
+      "ccrs": 9.221,
+      "chain": "C3",
+      "evidence": "tests/test_pipeline.py::test_l3_blocks_price_tampering | tests/test_l1.py::test_weak_crypto_calls_detected",
+      "gaps": "",
+      "notes": "Plausibility is analyst-declared metadata; CCRS itself is permutation invariant and does not encode order, reachability, or conditional dependence. An unreachable or irrelevant weakness still raises CCRS if it is included in the input set.",
+      "plausible": true,
+      "prerequisites": "attacker can alter the client-supplied payment amount before signing | merchant integrity helper relies on a weak digest",
+      "step_count": 2,
+      "trust_boundaries": "client -> merchant gateway | merchant mini-app -> integrity check"
+    },
+    {
+      "ccrs": 9.95345,
+      "chain": "C4",
+      "evidence": "tests/test_l1.py::test_custom_auth_detected | tests/test_l1.py::test_sensitive_admin_without_authorization_detected | tests/test_l2.py::test_idor_denied | tests/test_l3.py::test_each_bound_claim_is_enforced",
+      "gaps": "",
+      "notes": "Plausibility is analyst-declared metadata; CCRS itself is permutation invariant and does not encode order, reachability, or conditional dependence. An unreachable or irrelevant weakness still raises CCRS if it is included in the input set.",
+      "plausible": true,
+      "prerequisites": "attacker can reach the custom login handler | session reaches a sensitive handler without authorization | attacker enumerates a victim object reference | attacker alters the payment amount",
+      "step_count": 4,
+      "trust_boundaries": "user -> merchant mini-app | merchant mini-app -> backend | user -> merchant API | client -> merchant gateway"
+    }
+  ],
+  "schema_version": "1.0"
+}

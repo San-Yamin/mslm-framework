@@ -5,9 +5,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 This repository is a clean, reproducible implementation of the Mini-App
-Security Layer Model (MSLM) described in *Quantifying the Unseen*. It is a
-research prototype: it is suitable for controlled experiments and paper
-evaluation, but it is not represented as a production payment gateway.
+Security Layer Model (MSLM) and the Cumulative Chained Risk Score (CCRS)
+described in *A Cumulative Chained Risk Metric for Securing FinTech Mini-App
+Ecosystems* (ICAIT 2026, Paper 26012). It is a research prototype: it is
+suitable for controlled experiments and paper evaluation, but it is not
+represented as a production payment gateway.
 
 ## Research contribution
 
@@ -20,10 +22,16 @@ MSLM combines two complementary ideas:
    payment-integrity enforcement (L3).
 
 The repository evaluates four encoded attack-chain scenarios (C1–C4). It
-contains 54 automated tests plus a deterministic experiment harness that pairs
-each attack trial with a legitimate control. These results establish functional
-feasibility within the defined experimental scope; they do not establish
-universal real-world effectiveness or production readiness.
+contains 80 automated tests plus a deterministic experiment harness that pairs
+each attack trial with a legitimate control and emits a per-trial trace. These
+results establish functional feasibility within the defined experimental scope;
+they do not establish universal real-world effectiveness or production
+readiness.
+
+The experiment executes real security controls: the L1 analyzer runs over actual
+Python submissions, L2 performs real ownership and minimisation checks, and L3
+verifies real signed claims. C1 and C4 are blocked by the L1 onboarding gate, so
+their later stages are recorded as not reached rather than assumed blocked.
 
 ## What is implemented
 
@@ -55,20 +63,23 @@ PYTHONPATH=src python3 -m mslm.experiments \
   --output results
 ```
 
-Expected functional result: `Ran 54 tests` followed by `OK`. The experiment
-then writes `experiment.json`, `ccrs.csv`, `effectiveness.csv`, and
-`performance.csv` to `results/`.
+Expected functional result: `Ran 80 tests` followed by `OK`. The experiment
+then writes `experiment.json`, `ccrs.csv`, `effectiveness.csv`,
+`performance.csv`, `plausibility.csv`, and `trials.csv` to `results/`.
 
 ## Repository guide
 
-- `src/mslm/risk.py` — CCRS calculation and severity classification
-- `src/mslm/l1.py` — explainable onboarding analysis and deployment gate
+- `src/mslm/risk.py` — CCRS, aggregation comparison, and chain-plausibility gate
+- `src/mslm/l1.py` — explainable onboarding analysis (Python AST) and gate
 - `src/mslm/l2.py` — authorization, isolation, and response minimisation
 - `src/mslm/l3.py` — signed payment claims and replay prevention
-- `src/mslm/pipeline.py` — integrated enforcement path and audit decisions
+- `src/mslm/pipeline.py` — integrated enforcement path, onboarding, and audit
+- `src/mslm/scenarios.py` — traceable C1–C4 trial construction
 - `src/mslm/experiments.py` — deterministic trials and evidence export
-- `tests/` — 54 unit and integration tests
-- `docs/` — security assumptions, evidence interpretation, and demonstration guide
+- `tests/` — 80 unit and integration tests
+- `docs/` — security assumptions, evidence interpretation, demonstration guide
+- `reports/` — code audit, reviewer evidence matrix, methodology, CVSS notes
+- `results/baseline/` and `results/revised/` — preserved before/after evidence
 
 Run the experiment on the machine and configuration that will be reported in
 the paper. Do not copy sample or previous-run values into the paper without
@@ -82,6 +93,19 @@ exploit probabilities, and the formula does not by itself model the joint
 success probability of a strictly sequential chain. The paper should describe
 CCRS as a prioritisation metric and validate it empirically before making
 probability or predictive-accuracy claims.
+
+CCRS is permutation invariant and does **not** encode attack order,
+prerequisites, reachability, or conditional dependence. Two chains with the same
+CVSS values receive the same CCRS even if their paths differ, and adding an
+unreachable or irrelevant weakness still raises the score. `assess_chain_plausibility`
+exists to make prerequisites, trust boundaries, and evidence explicit before a
+set is treated as a chain; it is analyst-declared transparency metadata, not a
+reachability engine.
+
+L1 analyses **Python source via the standard-library `ast` module only**.
+Mini-app submissions are typically JavaScript/TypeScript; adapting the policy
+rules to that language is future work, and no precision/recall on a labelled
+mini-app corpus is claimed.
 
 See [docs/PAPER_EVIDENCE.md](docs/PAPER_EVIDENCE.md) for paper-ready reporting
 guidance and [docs/SECURITY_MODEL.md](docs/SECURITY_MODEL.md) for assumptions.

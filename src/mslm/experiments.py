@@ -4,7 +4,6 @@ import argparse
 import csv
 import json
 import platform
-import random
 import statistics
 import sys
 import time
@@ -17,7 +16,23 @@ from .audit import AuditLog
 from .l2 import Principal, Role
 from .l3 import KeyRing, PriceTokenService, ReplayStore
 from .pipeline import MSLMGateway, TransactionRequest
-from .risk import PAPER_CHAINS, calculate_ccrs
+from .risk import (
+    PAPER_CHAINS,
+    assess_chain_plausibility,
+    calculate_ccrs,
+    compare_aggregations,
+    score_plausible_chain,
+)
+from .scenarios import (
+    CHAIN_EXPECTED_LAYER,
+    CHAIN_INDICATORS,
+    CHAIN_STEPS,
+    Trial,
+    build_attack_trial,
+    build_control_trial,
+)
+
+CHAINS = ("C1", "C2", "C3", "C4")
 
 
 def _gateway() -> MSLMGateway:
@@ -28,96 +43,38 @@ def _gateway() -> MSLMGateway:
     return gateway
 
 
-def run_effectiveness(iterations: int, seed: int) -> List[Dict[str, object]]:
-    """Execute attack variations against the relevant enforced layer."""
+def run_trials(iterations: int, seed: int) -> List[Trial]:
+    """Build one traceable attack trial and one matched control per chain.
+
+    Each trial executes real security controls: the L1 analyzer runs over an
+    actual merchant submission, L2 ownership/minimisation run over an actual
+    request, and L3 verifies an actual signed claim.
+    """
     if iterations < 1:
         raise ValueError("iterations must be positive")
-    rng = random.Random(seed)
-    rows: List[Dict[str, object]] = []
-    chains = ("C1", "C2", "C3", "C4")
-    blocked_by = {"C1": "L1", "C2": "L2", "C3": "L3", "C4": "L1"}
-    blocked_counts = {chain: 0 for chain in chains}
-    legitimate_accepted = {chain: 0 for chain in chains}
-
+    trials: List[Trial] = []
     for index in range(iterations):
-        for chain in chains:
-            gateway = _gateway()
-            now = 1_800_000_000 + index
-            merchant = Principal("merchant-operator", Role.MERCHANT, "merchant-1")
-            victim = Principal("user-victim", Role.USER)
-            claims, signature = gateway.issue_token(
-                merchant,
-                merchant_id="merchant-1",
-                user_id="user-victim",
-                order_id=f"order-{index}",
-                amount_minor=10_000,
-                currency="USD",
-                now=now,
-            )
-            request = TransactionRequest(
-                "merchant-1",
-                "user-victim",
-                f"order-{index}",
-                10_000,
-                "USD",
-                claims,
-                signature,
-            )
-            principal = victim
-            if chain == "C1":
-                gateway.set_merchant_approval("merchant-1", False)
-            elif chain == "C2":
-                principal = Principal(f"attacker-{rng.randrange(1_000_000)}", Role.USER)
-            elif chain == "C3":
-                request = TransactionRequest(
-                    request.merchant_id,
-                    request.user_id,
-                    request.order_id,
-                    rng.randrange(1, 9_999),
-                    request.currency,
-                    request.claims,
-                    request.signature,
-                )
-            else:
-                gateway.set_merchant_approval("merchant-1", False)
-                principal = Principal(f"attacker-{index}", Role.USER)
-                request = TransactionRequest(
-                    request.merchant_id,
-                    request.user_id,
-                    request.order_id,
-                    1,
-                    request.currency,
-                    request.claims,
-                    request.signature,
-                )
-            decision = gateway.process(principal, request, now=now)
-            if not decision.approved and decision.blocked_at == blocked_by[chain]:
-                blocked_counts[chain] += 1
+        for chain in CHAINS:
+            trials.append(build_attack_trial(chain, index, seed))
+            trials.append(build_control_trial(chain, index, seed))
+    return trials
 
-            control_gateway = _gateway()
-            control_claims, control_signature = control_gateway.issue_token(
-                merchant,
-                merchant_id="merchant-1",
-                user_id="user-victim",
-                order_id=f"control-{chain}-{index}",
-                amount_minor=10_000,
-                currency="USD",
-                now=now,
-            )
-            control = TransactionRequest(
-                "merchant-1",
-                "user-victim",
-                f"control-{chain}-{index}",
-                10_000,
-                "USD",
-                control_claims,
-                control_signature,
-            )
-            if control_gateway.process(victim, control, now=now).approved:
-                legitimate_accepted[chain] += 1
 
-    for chain in chains:
-        blocked = blocked_counts[chain]
+def _variation_key(trial: Trial) -> str:
+    return json.dumps(trial.input_variation, sort_keys=True, separators=(",", ":"))
+
+
+def aggregate_effectiveness(trials: List[Trial], iterations: int) -> List[Dict[str, object]]:
+    """Aggregate traceable trials per chain with an honest block-rate interval."""
+    if iterations < 1:
+        raise ValueError("iterations must be positive")
+    rows: List[Dict[str, object]] = []
+    for chain in CHAINS:
+        attacks = [t for t in trials if t.chain == chain and t.kind == "attack"]
+        controls = [t for t in trials if t.chain == chain and t.kind == "control"]
+        blocked = sum(1 for t in attacks if t.outcome == "block")
+        matched = sum(1 for t in attacks if t.matched_expectation)
+        controls_accepted = sum(1 for t in controls if t.matched_expectation)
         low, high = _wilson_interval(blocked, iterations)
         rows.append(
             {
@@ -128,11 +85,19 @@ def run_effectiveness(iterations: int, seed: int) -> List[Dict[str, object]]:
                 "block_rate_percent": round(100.0 * blocked / iterations, 3),
                 "block_rate_ci95_low_percent": round(100.0 * low, 3),
                 "block_rate_ci95_high_percent": round(100.0 * high, 3),
-                "legitimate_controls_accepted": legitimate_accepted[chain],
-                "expected_first_layer": blocked_by[chain],
+                "legitimate_controls_accepted": controls_accepted,
+                "expected_first_layer": CHAIN_EXPECTED_LAYER[chain],
+                "first_layer_matches_all": matched == iterations,
+                "indicators": "|".join(CHAIN_INDICATORS[chain]),
+                "distinct_attack_inputs": len({_variation_key(t) for t in attacks}),
             }
         )
     return rows
+
+
+def run_effectiveness(iterations: int, seed: int) -> List[Dict[str, object]]:
+    """Build trials and aggregate them per chain."""
+    return aggregate_effectiveness(run_trials(iterations, seed), iterations)
 
 
 def _wilson_interval(successes: int, trials: int, z: float = 1.959964) -> tuple:
@@ -214,10 +179,35 @@ def risk_rows() -> List[Dict[str, object]]:
     rows = []
     for chain, scores in PAPER_CHAINS.items():
         result = calculate_ccrs(scores)
+        comparison = compare_aggregations(scores)
         row = asdict(result)
         row["severity"] = result.severity.value
         row["chain"] = chain
+        row["mean_cvss"] = comparison.mean
+        row["capped_sum"] = comparison.capped_sum
+        row["sequential_product"] = comparison.sequential_product
         rows.append(row)
+    return rows
+
+
+def plausibility_rows() -> List[Dict[str, object]]:
+    """Explicit chain-plausibility evidence for C1-C4 (Reviewers I.1, III.1)."""
+    rows = []
+    for chain, steps in CHAIN_STEPS.items():
+        assessment = assess_chain_plausibility(chain, steps)
+        rows.append(
+            {
+                "chain": chain,
+                "step_count": assessment.step_count,
+                "plausible": assessment.plausible,
+                "prerequisites": " | ".join(assessment.prerequisites),
+                "trust_boundaries": " | ".join(assessment.trust_boundaries),
+                "evidence": " | ".join(assessment.evidence),
+                "ccrs": score_plausible_chain(assessment).raw_score if assessment.plausible else None,
+                "gaps": " | ".join(assessment.gaps),
+                "notes": assessment.notes,
+            }
+        )
     return rows
 
 
@@ -239,9 +229,12 @@ def main(argv=None) -> int:
     args.output.mkdir(parents=True, exist_ok=True)
 
     started = time.time()
-    effectiveness = run_effectiveness(args.iterations, args.seed)
+    trials = run_trials(args.iterations, args.seed)
+    effectiveness = aggregate_effectiveness(trials, args.iterations)
     performance = run_benchmark(args.benchmark_iterations)
     risks = risk_rows()
+    plausibility = plausibility_rows()
+    trial_rows = [trial.as_row() for trial in trials]
     report = {
         "schema_version": "1.0",
         "framework_version": "0.2.0",
@@ -258,10 +251,13 @@ def main(argv=None) -> int:
             "processor": platform.processor() or "not reported",
         },
         "ccrs": risks,
+        "plausibility": plausibility,
         "effectiveness": effectiveness,
         "performance": performance,
         "limitations": [
-            "Synthetic controlled attacks; not OWASP Juice Shop traffic",
+            "Synthetic controlled attacks exercising the encoded controls; not OWASP Juice Shop traffic",
+            "C1/C4 are blocked by the L1 gate, so later layers are not reached in those trials",
+            "L1 analyses Python AST only; mini-app JavaScript/TypeScript is out of scope",
             "In-memory replay store; no distributed storage latency",
             "Microbenchmark excludes network, database and TLS overhead",
         ],
@@ -271,6 +267,8 @@ def main(argv=None) -> int:
     _write_csv(args.output / "effectiveness.csv", effectiveness)
     _write_csv(args.output / "performance.csv", performance)
     _write_csv(args.output / "ccrs.csv", risks)
+    _write_csv(args.output / "plausibility.csv", plausibility)
+    _write_csv(args.output / "trials.csv", trial_rows)
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0
 

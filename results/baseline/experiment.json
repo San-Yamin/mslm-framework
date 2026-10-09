@@ -1,0 +1,138 @@
+{
+  "ccrs": [
+    {
+      "amplification_percent": 24.0,
+      "assumption": "independent cumulative-complement aggregation",
+      "chain": "C1",
+      "deployment_score": 9.3,
+      "max_cvss": 7.5,
+      "raw_score": 9.3,
+      "scores": [
+        7.5,
+        7.2
+      ],
+      "severity": "critical"
+    },
+    {
+      "amplification_percent": 33.384615,
+      "assumption": "independent cumulative-complement aggregation",
+      "chain": "C2",
+      "deployment_score": 8.67,
+      "max_cvss": 6.5,
+      "raw_score": 8.67,
+      "scores": [
+        6.5,
+        6.2
+      ],
+      "severity": "high"
+    },
+    {
+      "amplification_percent": 13.839506,
+      "assumption": "independent cumulative-complement aggregation",
+      "chain": "C3",
+      "deployment_score": 9.221,
+      "max_cvss": 8.1,
+      "raw_score": 9.221,
+      "scores": [
+        8.1,
+        5.9
+      ],
+      "severity": "critical"
+    },
+    {
+      "amplification_percent": 22.882099,
+      "assumption": "independent cumulative-complement aggregation",
+      "chain": "C4",
+      "deployment_score": 9.8,
+      "max_cvss": 8.1,
+      "raw_score": 9.95345,
+      "scores": [
+        7.5,
+        7.2,
+        6.5,
+        8.1
+      ],
+      "severity": "critical"
+    }
+  ],
+  "duration_seconds": 0.580843,
+  "effectiveness": [
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 99.617,
+      "block_rate_percent": 100.0,
+      "blocked": 1000,
+      "chain": "C1",
+      "expected_first_layer": "L1",
+      "iterations": 1000,
+      "legitimate_controls_accepted": 1000,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 99.617,
+      "block_rate_percent": 100.0,
+      "blocked": 1000,
+      "chain": "C2",
+      "expected_first_layer": "L2",
+      "iterations": 1000,
+      "legitimate_controls_accepted": 1000,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 99.617,
+      "block_rate_percent": 100.0,
+      "blocked": 1000,
+      "chain": "C3",
+      "expected_first_layer": "L3",
+      "iterations": 1000,
+      "legitimate_controls_accepted": 1000,
+      "unexpected_approvals": 0
+    },
+    {
+      "block_rate_ci95_high_percent": 100.0,
+      "block_rate_ci95_low_percent": 99.617,
+      "block_rate_percent": 100.0,
+      "blocked": 1000,
+      "chain": "C4",
+      "expected_first_layer": "L1",
+      "iterations": 1000,
+      "legitimate_controls_accepted": 1000,
+      "unexpected_approvals": 0
+    }
+  ],
+  "environment": {
+    "platform": "macOS-15.6-arm64-arm-64bit",
+    "processor": "arm",
+    "python": "3.9.6 (default, Apr 30 2025, 02:07:17) \n[Clang 17.0.0 (clang-1700.0.13.5)]"
+  },
+  "framework_version": "0.2.0",
+  "generated_at_unix": 1791527193.082964,
+  "limitations": [
+    "Synthetic controlled attacks; not OWASP Juice Shop traffic",
+    "In-memory replay store; no distributed storage latency",
+    "Microbenchmark excludes network, database and TLS overhead"
+  ],
+  "parameters": {
+    "benchmark_iterations": 10000,
+    "iterations_per_chain": 1000,
+    "seed": 2026
+  },
+  "performance": [
+    {
+      "absolute_overhead_mean_us": 14.916,
+      "control_mean_us": 0.192,
+      "iterations": 10000,
+      "max_us": 95.459,
+      "mean_us": 15.108,
+      "median_us": 15.167,
+      "min_us": 13.541,
+      "operation": "L2+L3 valid payment verification",
+      "overhead_percent_vs_control": 7761.5,
+      "p95_us": 16.042,
+      "p99_us": 21.666
+    }
+  ],
+  "schema_version": "1.0"
+}

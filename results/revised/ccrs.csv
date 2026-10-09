@@ -1,0 +1,5 @@
+scores,raw_score,deployment_score,max_cvss,amplification_percent,severity,assumption,chain,mean_cvss,capped_sum,sequential_product
+"(7.5, 7.2)",9.3,9.3,7.5,24.0,critical,independent cumulative-complement aggregation,C1,7.35,10.0,5.4
+"(6.5, 6.2)",8.67,8.67,6.5,33.384615,high,independent cumulative-complement aggregation,C2,6.35,10.0,4.03
+"(8.1, 5.9)",9.221,9.221,8.1,13.839506,critical,independent cumulative-complement aggregation,C3,7.0,10.0,4.779
+"(7.5, 7.2, 6.5, 8.1)",9.95345,9.8,8.1,22.882099,critical,independent cumulative-complement aggregation,C4,7.325,10.0,2.8431
